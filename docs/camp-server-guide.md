@@ -168,6 +168,6 @@ IdentityFile C:\Users\Oleg\.ssh\ir_rsa
 
 2. Зайти в https://github.com/settings/personal-access-tokens и создать новый токен с любым именем, выбираем Only select repositories, выбираем репозиторий https://github.com/sedol1339/audio-llm-yandex-camp и в Repository permissions указываем Contents: read and write и Pull requests: read and write. Нажимаем Generate token и копируем сгенерированный токен.
  
-3. На сервере вводим команду `gh auth login` и выбираем: github.com - HTTPS - Y - Paste an authentication token - вставляем токен. Система напишет в какой аккаунт вы залогинились.
+3. На сервере вводим команды `git config --global --replace-all credential.helper store`, `gh auth login` и выбираем: github.com - HTTPS - Y - Paste an authentication token - вставляем токен. Система напишет в какой аккаунт вы залогинились.
 
 Ваш ключ доступа будет храниться в незашифрованном виде на сервере, но данный ключ позволяет работать только с выбранным репозиторием. Если бы мы вместо fine-grained ключей использовали SSH-ключи, то любой пользователь сервера мог бы получить доступ к приватным github-репозиториям других пользователей, что нежелательно.
