@@ -209,7 +209,7 @@ def parse_multivariant_string(
                         options_raw.append((repeated, start_pos))
                 elif (match2 := re.match(r'(\w+)\<(\w+)\>', option_text.strip())) is not None:
                     # forms like Facebook<е>
-                    # TODO: ambiuous: need to add empty option to {Facebook<е>} ??
+                    # TODO: ambiguous: need to add empty option to {Facebook<е>} ??
                     # TODO: handle this in single-variant blocks
                     base, suffix = match2.groups()
                     options_raw.append((f'{base}', start_pos))
