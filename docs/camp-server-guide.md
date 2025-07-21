@@ -166,4 +166,22 @@ IdentityFile C:\Users\Oleg\.ssh\ir_rsa
 
 2. Зайти в https://github.com/settings/tokens/new и создать новый токен с любым именем, ставим галочки в выбираем repo, workflow, read:org. Нажимаем Generate token и копируем сгенерированный токен.
  
-3. На сервере вводим команды `git config --global --replace-all credential.helper store`, `gh auth login` и выбираем: github.com - HTTPS - Y - Paste an authentication token - вставляем токен. Система напишет в какой аккаунт вы залогинились. Проверяем: git clone https://github.com/sedol1339/audio-llm-yandex-camp
+3. На сервере вводим команды `git config --global --replace-all credential.helper store`, `gh auth login` и выбираем: github.com - HTTPS - Y - Paste an authentication token - вставляем токен. Система напишет в какой аккаунт вы залогинились. Проверяем:
+
+```
+mkdir /storage/$USER
+cd /storage/$USER
+git clone https://github.com/sedol1339/audio-llm-yandex-camp
+```
+
+# Настройка HF кэша
+
+Большие файлы лучше хранить на /storage, чтобы загрузочный SSD-диск не забивался. Туда же удобнее клонировать проект.
+
+Создаем в проекте файл .env и пишем там (этот файл хранит переменные среды для ноутбуков):
+
+```
+HF_CACHE=/storage/<your user name>/.cache/huggingface
+```
+
+Открываем редактор через `nano ~/.bashrc`, в начало файла добавляем такую же строку. Сохраняем через Ctrl-X, жмем Y, <enter>
