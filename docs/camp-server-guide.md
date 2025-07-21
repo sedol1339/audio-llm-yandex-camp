@@ -162,12 +162,26 @@ IdentityFile C:\Users\Oleg\.ssh\ir_rsa
 
 Если мы будем делать pull и push на github с сервера, то на сервер нужно установить GitHub CLI: `sudo apt install gh`
 
-Есть разные варианты логина в Github, наиболее безопасный - fine-grained токены. Пошагово для настройки доступа нужно сделать следующее:
-
 1. Отправить свое имя пользователя Github и принять приглашение в коллабораторы проекта https://github.com/sedol1339/audio-llm-yandex-camp , чтобы можно было пушить изменения в этот проект.
 
-2. Зайти в https://github.com/settings/personal-access-tokens и создать новый токен с любым именем, выбираем Only select repositories, выбираем репозиторий https://github.com/sedol1339/audio-llm-yandex-camp и в Repository permissions указываем Contents: read and write и Pull requests: read and write. Нажимаем Generate token и копируем сгенерированный токен.
+2. Зайти в https://github.com/settings/tokens/new и создать новый токен с любым именем, ставим галочки в выбираем repo, workflow, read:org. Нажимаем Generate token и копируем сгенерированный токен.
  
-3. На сервере вводим команды `git config --global --replace-all credential.helper store`, `gh auth login` и выбираем: github.com - HTTPS - Y - Paste an authentication token - вставляем токен. Система напишет в какой аккаунт вы залогинились.
+3. На сервере вводим команды `git config --global --replace-all credential.helper store`, `gh auth login` и выбираем: github.com - HTTPS - Y - Paste an authentication token - вставляем токен. Система напишет в какой аккаунт вы залогинились. Проверяем:
 
-Ваш ключ доступа будет храниться в незашифрованном виде на сервере, но данный ключ позволяет работать только с выбранным репозиторием. Если бы мы вместо fine-grained ключей использовали SSH-ключи, то любой пользователь сервера мог бы получить доступ к приватным github-репозиториям других пользователей, что нежелательно.
+```
+mkdir /storage/$USER
+cd /storage/$USER
+git clone https://github.com/sedol1339/audio-llm-yandex-camp
+```
+
+# Настройка HF кэша
+
+Большие файлы лучше хранить на /storage, чтобы загрузочный SSD-диск не забивался. Туда же удобнее клонировать проект.
+
+Создаем в проекте файл .env и пишем там (этот файл хранит переменные среды для ноутбуков):
+
+```
+HF_CACHE=/storage/<your user name>/.cache/huggingface
+```
+
+Открываем редактор через `nano ~/.bashrc`, в начало файла добавляем такую же строку. Сохраняем через Ctrl-X, жмем Y, <enter>
