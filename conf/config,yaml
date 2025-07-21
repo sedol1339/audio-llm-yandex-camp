@@ -1,0 +1,15 @@
+defaults:
+  - datasets: default_datasets
+  - models: default_models
+  - _self_
+
+
+output_dir: /outputs
+sample_rate: 16000
+
+segments:
+  length: 0.5
+  shift: 0.25
+  averaging_weights: "uniform"
+  feature_tick_size: 0.1  # seconds
+  last_chunk_mode: true
