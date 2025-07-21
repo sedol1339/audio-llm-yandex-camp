@@ -1,11 +1,10 @@
-from typing import Literal, override, cast
-
+from typing import Literal
+from typing_extensions import override  # Для Python < 3.12
 import torch
-from transformers import pipeline, WhisperForConditionalGeneration, WhisperProcessor # type: ignore
-
-from .base import ASREvalWrapper
-from ..utils.types import FLOATS
-
+import numpy as np
+from transformers import WhisperForConditionalGeneration, WhisperProcessor # type: ignore
+from src.asr_eval.models.base import ASREvalWrapper
+from src.asr_eval.utils.types import FLOATS
 
 class WhisperLongformWrapper(ASREvalWrapper):
     def __init__(
@@ -17,61 +16,68 @@ class WhisperLongformWrapper(ASREvalWrapper):
         self.model_name = model_name
         self.lang = lang
         self.condition_on_prev_tokens = condition_on_prev_tokens
-        
-        # ??
-        self.whisper_processor = None
+        self.device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
         self.model = None
-        self.generate_kwargs = None
-        
-        
+        self.processor = None
+        self.generate_kwargs = {
+            'language': self.lang,
+            'task': 'transcribe',
+            'temperature': 0,
+            'do_sample': False,
+            'return_timestamps': True
+        }
+
     def _maybe_instantiate(self):
         if self.model is None:
-            self.whisper_processor = cast(WhisperProcessor, WhisperProcessor.from_pretrained( # type: ignore
+            self.processor = WhisperProcessor.from_pretrained( # type: ignore
                 self.model_name,
-                language='Russian' if self.lang == 'ru' else 'English', # how this is used? maybe 'ru', 'en'?
-                task='transcribe',
-            ))
-            
-            _pipeline = pipeline(
-                'automatic-speech-recognition',
-                model=self.model_name,
-                device='cuda:0' if torch.cuda.is_available() else 'cpu',
-                model_kwargs={'attn_implementation': 'sdpa'},
+                language='Russian' if self.lang == 'ru' else 'English'
             )
-            self.model = cast(WhisperForConditionalGeneration, _pipeline.model) # type: ignore
             
-            self.generate_kwargs = {
-                'language': f'<|{self.lang}|>',
-                'task': 'transcribe',
-                'forced_decoder_ids': None,
-            }
-    
+            self.model = WhisperForConditionalGeneration.from_pretrained( # type: ignore
+                self.model_name,
+                attn_implementation="sdpa",
+                torch_dtype=torch.float32
+            ).to(self.device) # type: ignore
+
     @override
     def __call__(self, waveforms: list[FLOATS]) -> list[str]:
         self._maybe_instantiate()
-        texts: list[str] = []
-        # https://github.com/huggingface/transformers/pull/27658
+        texts = []
+        
         for waveform in waveforms:
-            inputs = self.whisper_processor( # type: ignore
+            # 1. Конвертация и нормализация аудио
+            waveform = np.asarray(waveform)
+            if waveform.dtype != np.float32:
+                waveform = waveform.astype(np.float32)
+            waveform = waveform / np.max(np.abs(waveform))  # Нормализация [-1, 1]
+            
+            # 2. Подготовка входных данных (исправленная версия)
+            inputs = self.processor( # type: ignore
                 waveform,
-                return_tensors='pt',
-                truncation=False,
-                padding='longest',
-                return_attention_mask=True,  # probably we do not need this for Whisper
-                sampling_rate=16_000
+                sampling_rate=16000,
+                return_tensors="pt",
+                padding="longest"  # Добавлено для поддержки разных длин
             )
-            result = self.model.generate( # type: ignore
-                **inputs.to(self.model.device), # type: ignore
-                condition_on_prev_tokens=self.condition_on_prev_tokens,
-                # temperature=(0.0, 0.2, 0.4, 0.6, 0.8, 1.0),
-                temperature=0, # for determinism
-                do_sample=False,  # for determinism
-                logprob_threshold=-1.0,
-                compression_ratio_threshold=1.35,
-                return_timestamps=True,  # required foir longform
-                **self.generate_kwargs, # type: ignore
-            )
-            texts.append(self.whisper_processor.batch_decode( # type: ignore
-                result, skip_special_tokens=True # type: ignore
-            )[0])
-        return texts
+            
+            # 3. Перенос на нужное устройство с правильным типом
+            input_features = inputs.get("input_features") # type: ignore
+            if input_features is None:
+                input_features = inputs.get("input_values")  # type: ignore # Альтернативное имя для разных версий
+                
+            if input_features is None:
+                raise ValueError("Processor не вернул ни input_features, ни input_values")
+                
+            input_features = input_features.to(device=self.device, dtype=self.model.dtype) # type: ignore
+            
+            # 4. Генерация текста
+            with torch.no_grad():
+                outputs = self.model.generate( # type: ignore
+                    input_features=input_features,  # type: ignore
+                    **self.generate_kwargs # type: ignore
+                )
+            
+            text = self.processor.batch_decode(outputs, skip_special_tokens=True)[0] # type: ignore
+            texts.append(text) # type: ignore
+        
+        return texts # type: ignore
