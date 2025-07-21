@@ -1,10 +1,10 @@
-from typing import Literal, cast
+from typing import Literal
 from typing_extensions import override  # Для Python < 3.12
 import torch
 import numpy as np
-from transformers import pipeline, WhisperForConditionalGeneration, WhisperProcessor
-from .base import ASREvalWrapper
-from ..utils.types import FLOATS
+from transformers import WhisperForConditionalGeneration, WhisperProcessor # type: ignore
+from src.asr_eval.models.base import ASREvalWrapper
+from src.asr_eval.utils.types import FLOATS
 
 class WhisperLongformWrapper(ASREvalWrapper):
     def __init__(
@@ -29,16 +29,16 @@ class WhisperLongformWrapper(ASREvalWrapper):
 
     def _maybe_instantiate(self):
         if self.model is None:
-            self.processor = WhisperProcessor.from_pretrained(
+            self.processor = WhisperProcessor.from_pretrained( # type: ignore
                 self.model_name,
                 language='Russian' if self.lang == 'ru' else 'English'
             )
             
-            self.model = WhisperForConditionalGeneration.from_pretrained(
+            self.model = WhisperForConditionalGeneration.from_pretrained( # type: ignore
                 self.model_name,
                 attn_implementation="sdpa",
-                torch_dtype=torch.float16 if 'cuda' in self.device else torch.float32
-            ).to(self.device)
+                torch_dtype=torch.float32
+            ).to(self.device) # type: ignore
 
     @override
     def __call__(self, waveforms: list[FLOATS]) -> list[str]:
@@ -53,7 +53,7 @@ class WhisperLongformWrapper(ASREvalWrapper):
             waveform = waveform / np.max(np.abs(waveform))  # Нормализация [-1, 1]
             
             # 2. Подготовка входных данных (исправленная версия)
-            inputs = self.processor(
+            inputs = self.processor( # type: ignore
                 waveform,
                 sampling_rate=16000,
                 return_tensors="pt",
@@ -61,23 +61,23 @@ class WhisperLongformWrapper(ASREvalWrapper):
             )
             
             # 3. Перенос на нужное устройство с правильным типом
-            input_features = inputs.get("input_features")
+            input_features = inputs.get("input_features") # type: ignore
             if input_features is None:
-                input_features = inputs.get("input_values")  # Альтернативное имя для разных версий
+                input_features = inputs.get("input_values")  # type: ignore # Альтернативное имя для разных версий
                 
             if input_features is None:
                 raise ValueError("Processor не вернул ни input_features, ни input_values")
                 
-            input_features = input_features.to(device=self.device, dtype=self.model.dtype)
+            input_features = input_features.to(device=self.device, dtype=self.model.dtype) # type: ignore
             
             # 4. Генерация текста
             with torch.no_grad():
-                outputs = self.model.generate(
-                    input_features=input_features,
-                    **self.generate_kwargs
+                outputs = self.model.generate( # type: ignore
+                    input_features=input_features,  # type: ignore
+                    **self.generate_kwargs # type: ignore
                 )
             
-            text = self.processor.batch_decode(outputs, skip_special_tokens=True)[0]
-            texts.append(text)
+            text = self.processor.batch_decode(outputs, skip_special_tokens=True)[0] # type: ignore
+            texts.append(text) # type: ignore
         
-        return texts
+        return texts # type: ignore
