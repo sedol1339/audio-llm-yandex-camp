@@ -1,11 +1,27 @@
+from contextlib import contextmanager
 from dataclasses import dataclass
-from typing import Any, override
+from pathlib import Path
+import tempfile
+from typing import Any, Iterator, override
 
 import torch
+import soundfile as sf
 from gigaam.vad_utils import segment_audio as gigaam_segment_audio
 
 from ..segments.segment import AudioSegment
 from ..utils.types import FLOATS
+
+
+@contextmanager
+def audio_as_file(waveform: FLOATS) -> Iterator[Path]:
+    '''
+    Turns an audio with sampling rate 16_000 into file, TODO check if it works
+    with audio_as_file(waveform) as temp_file_path:
+        recognize_speech(path=temp_file_path)
+    '''
+    with tempfile.NamedTemporaryFile('wb', delete_on_close=True) as f:
+        sf.write(f, waveform, samplerate=16_000, format='wav') # type: ignore
+        yield Path(f.name)
 
 
 @dataclass(frozen=True)
