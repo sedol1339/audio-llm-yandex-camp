@@ -5,7 +5,9 @@ from dataclasses import asdict, dataclass, field
 from termcolor import colored
 
 from .misc import groupby_into_spans
-
+import numpy as np
+from tempfile import NamedTemporaryFile
+import soundfile as sf
 
 @dataclass
 class Formatting:
@@ -57,7 +59,7 @@ def apply_ansi_formatting(text: str, spans: list[FormattingSpan]) -> str:
 
     return result
 
-def waveform_to_temp_wav(self, waveform: FLOATS, sampling_rate: int = 16000) -> str:
+def waveform_to_temp_wav(waveform: FLOATS, sampling_rate: int = 16000) -> str:
     """Convert waveform to temporary WAV-file"""
     waveform = np.asarray(waveform)
     if waveform.dtype != np.float32:
