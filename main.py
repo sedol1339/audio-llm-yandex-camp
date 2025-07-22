@@ -20,9 +20,22 @@ from omegaconf import open_dict
 import json
 from src.asr_eval.utils.types import FLOATS
 import torchaudio
+from src.serialize import save_to_json
+from tqdm import tqdm
 
 # Настройка логгера
 logger = logging.getLogger(__name__)
+
+def save_predicts(model_name, dataset_name,predictions, transcriptions, cfg: DictConfig):
+    for index, (prediction, transcription)in enumerate(zip(predictions, transcriptions)):
+        save_dict = {}
+        true_words = parse_multivariant_string(transcription)
+        alignment = align(true_words, split_text_into_tokens(prediction))
+        save_dict['preiction'] = prediction
+        save_dict['transcription'] = transcription
+        save_dict['alignment'] = alignment
+        save_to_json(save_dict, os.path.join(cfg.output_dir, cfg.run.name, f"{model_name}_{dataset_name}", f"{index}.json"))
+        
 
 @dataclass
 class ExperimentResult:
@@ -43,8 +56,8 @@ def create_result_row(
         "model": model_name,
         "dataset": dataset_name,
         **metrics,
-        **{f"model_{k}": v for k, v in model_cfg.items() if k != "_target_"},
-        **{f"dataset_{k}": v for k, v in dataset_cfg.items() if k not in ["path", "_target_"]},
+        **{f"model_{k}": v for k, v in model_cfg.params.items() if k != "_target_"},
+        **{f"dataset_{k}": v for k, v in dataset_cfg.params.items() if k not in ["path", "_target_"]},
     }
 
 class AbsContext(ABC):
@@ -67,41 +80,20 @@ def get_predictions(
     context: Optional[AbsContext] = StringContext("")
 ) -> List[str]:
     predictions = []
-    for sample in dataset:
+    for sample in tqdm(dataset):
         audio: FLOATS = sample['audio']['array']
-        print(len(audio))
         sample_rate: int = sample['audio']['sampling_rate']
         transforms = torchaudio.transforms.Resample(orig_freq=sample_rate, new_freq=cfg.sample_rate)
-        audio = transforms(audio)    
-        segments: List[AudioSegment] = chunk_audio(
-            len(audio),
-            cfg.segments.length,
-            cfg.segments.shift,
-            cfg.segments.last_chunk_mode
-        )
-        
-        features = []
-        for segment in segments:
-            audio_slice = audio[segment.slice(sample_rate)]
-            print(len(audio_slice), segment.duration)
-            features.append(model([audio_slice])[0])
-        
-        prediction = average_segment_features(
-            segments,
-            features,
-            cfg.segments.feature_tick_size,
-            cfg.segments.averaging_weights
-        )
-        predictions.append(prediction)
-    
+        audio = transforms(audio)
+        predictions.append(model([audio])[0])
     return predictions
 
 def load_dataset_from_config(dataset_cfg: DictConfig) -> Dataset:
     """Загружает датасет по имени конфига"""
-    if dataset_cfg.tag== "podlodka":
+    if dataset_cfg.dataset == "podlodka":
         return load_podlodka()
     # Добавьте здесь загрузку других датасетов
-    raise ValueError(f"Unknown dataset: {dataset_cfg.tag}")
+    raise ValueError(f"Unknown dataset: {dataset_cfg.dataset}")
 
 def initialize_model(model_cfg: DictConfig) -> ASREvalWrapper:
     if model_cfg.model == "whisper":
@@ -129,7 +121,7 @@ def main(cfg: DictConfig) -> None:
     cfg_dict = OmegaConf.to_container(cfg, resolve=True)
     print("=== Current Configuration ===")
     print(json.dumps(cfg_dict, indent=4, ensure_ascii=False))
-    os.makedirs(cfg.run.output_dir, exist_ok=True)
+    os.makedirs(cfg.output_dir, exist_ok=True)
     all_results = []
     
     # Итерация по всем датасетам в конфиге
@@ -159,6 +151,8 @@ def main(cfg: DictConfig) -> None:
                 
                 transcriptions = dataset['transcription']
                 
+                save_predicts(model_cfg.model, dataset_cfg.dataset, predictions, transcriptions, cfg)
+                logger.info(f"\n  === Compute metrics: {model_name} on {dataset_name} ===")
                 metrics = compute_metrics(predictions, transcriptions, cfg)
                 
                 result_row = create_result_row(
@@ -176,7 +170,7 @@ def main(cfg: DictConfig) -> None:
     
     if all_results:
         results_df = pd.DataFrame(all_results)
-        results_path = os.path.join(cfg.run.output_dir, "results.csv")
+        results_path = os.path.join(cfg.output_dir, cfg.run.name, "results.csv")
         results_df.to_csv(results_path, index=False)
         logger.info(f"Results saved to {results_path}")
     else:
