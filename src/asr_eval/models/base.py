@@ -19,9 +19,10 @@ def audio_as_file(waveform: FLOATS) -> Iterator[Path]:
     with audio_as_file(waveform) as temp_file_path:
         recognize_speech(path=temp_file_path)
     '''
-    with tempfile.NamedTemporaryFile('wb', delete_on_close=True) as f:
+    with tempfile.NamedTemporaryFile('wb') as f:
         sf.write(f, waveform, samplerate=16_000, format='wav') # type: ignore
         yield Path(f.name)
+    f.unlink()
 
 
 @dataclass(frozen=True)
