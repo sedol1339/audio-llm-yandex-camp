@@ -49,6 +49,9 @@ CHUNK_SIZE = StreamingCTCPipeline.CHUNK_SIZE  # A 300 ms slice of audio (2400 sa
 
 
 class TOneWrapper(ASREvalWrapper):
+    def __init__(self):
+        self.pipeline = None
+    
     @override
     def __call__(self, waveforms: list[FLOATS]) -> list[str]:
         self.pipeline = self.pipeline or StreamingCTCPipeline.from_hugging_face()
