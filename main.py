@@ -11,7 +11,7 @@ from src.asr_eval.segments.segment import AudioSegment
 import pandas as pd
 import os
 from dataclasses import dataclass
-from src.datasets_list import load_podlodka
+from src.datasets_list import *
 from src.asr_eval.models.whisper_wrapper import WhisperLongformWrapper
 from src.asr_eval.align.parsing import parse_multivariant_string, split_text_into_tokens
 from src.asr_eval.align.recursive import align
@@ -92,10 +92,22 @@ def load_dataset_from_config(dataset_cfg: DictConfig) -> Dataset:
     """Загружает датасет по имени конфига"""
     if dataset_cfg.dataset == "podlodka":
         return load_podlodka()
+    if dataset_cfg.dataset == "youtube_lectures":
+        return load_youtube_lectures()
+    if dataset_cfg.dataset == "golos_farfield":
+        return load_golos_farfield()
+    if dataset_cfg.dataset == "rulibrispeech":
+        return load_rulibrispeech()
+    if dataset_cfg.dataset == "sova_rudevices":
+        return load_sova_rudevices()
+    if dataset_cfg.dataset == "fleurs":
+        return load_fleurs()
     # Добавьте здесь загрузку других датасетов
     raise ValueError(f"Unknown dataset: {dataset_cfg.dataset}")
 
 def initialize_model(model_cfg: DictConfig) -> ASREvalWrapper:
+    if model_cfg.model == "whisper":
+        return WhisperLongformWrapper(model_cfg.name)
     if model_cfg.model == "whisper":
         return WhisperLongformWrapper(model_cfg.name)
     # Добавьте здесь инициализацию других моделей
