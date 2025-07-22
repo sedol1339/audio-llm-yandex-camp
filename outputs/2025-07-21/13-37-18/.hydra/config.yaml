@@ -1,0 +1,22 @@
+datasets:
+  datasets:
+    podlodka:
+      tag: podlodka
+      params: null
+models:
+  models:
+    whisper:
+      model: whisper
+      name: openai/whisper-tiny
+      params: {}
+run:
+  output_dir: ./outputs
+metrics_list:
+- wer
+sample_rate: 16000
+segments:
+  length: 0.5
+  shift: 0.25
+  averaging_weights: uniform
+  feature_tick_size: 0.1
+  last_chunk_mode: true

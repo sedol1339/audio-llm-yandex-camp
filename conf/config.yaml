@@ -1,0 +1,19 @@
+defaults:
+  - datasets@_here_: datasets
+  - models@_here_: models
+  - _self_
+
+run:
+  output_dir: ./outputs
+
+metrics_list:
+  - "wer"
+
+sample_rate: 16000
+
+segments:
+  length: 16000
+  shift: 4000
+  averaging_weights: "uniform"
+  feature_tick_size: 0.1  # seconds
+  last_chunk_mode: 'same_length'
