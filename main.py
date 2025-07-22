@@ -64,11 +64,8 @@ def get_predictions(
     dataset: Dataset, 
     cfg: DictConfig, 
     model_cfg: DictConfig,
-    context: Optional[AbsContext] = None
+    context: Optional[AbsContext] = StringContext("")
 ) -> List[str]:
-    if context is None:
-        context = StringContext("")
-    
     predictions = []
     for sample in dataset:
         audio: FLOATS = sample['audio']['array']
@@ -86,7 +83,7 @@ def get_predictions(
         features = []
         for segment in segments:
             audio_slice = audio[segment.slice(sample_rate)]
-            print(len(audio_slice))
+            print(len(audio_slice), segment.duration)
             features.append(model([audio_slice])[0])
         
         prediction = average_segment_features(
