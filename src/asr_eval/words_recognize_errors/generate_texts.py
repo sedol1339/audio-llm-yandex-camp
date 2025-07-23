@@ -1,5 +1,4 @@
 from llm import TextGenerator
-from domain_words import domain_words # list[str]
 from logging import getLogger
 logger = getLogger('text generator')
  
@@ -20,8 +19,3 @@ def generate_texts(domain_words: list[str]) -> list[str]:
         except Exception as e:
             logger.error(f"Не удалось сгенерировать предложение для слова '{word}': {e}")
     return sentences
-
-
-if __name__ == '__main__':
-    from domain_words import domain_words
-    print(generate_texts(domain_words))
