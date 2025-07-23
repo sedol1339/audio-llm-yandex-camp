@@ -1,0 +1,15 @@
+datasets:
+  podlodka:
+    dataset: podlodka
+    params: {}
+models:
+  whisper:
+    model: whisper
+    name: openai/whisper-large-v3
+    params: {}
+run:
+  name: test
+output_dir: ./outputs
+metrics_list:
+- wer
+sample_rate: 16000
