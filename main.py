@@ -25,31 +25,12 @@ from tqdm import tqdm
 from collections import OrderedDict
 from src.asr_eval.models.qwen_audio_wrapper import QwenAudioWrapper
 from src.asr_eval.models.voxtral_wrapper import VoxtralmWrapper
+from src.asr_eval.models.gigaam_wrapper import GigaAMWrapper
+from src.asr_eval.models.gemma_wrapper import Gemma3nSTTWrapper
+# from src.asr_eval.models.t_one_wrapper import TOneWrapper
 
 # Настройка логгера
 logger = logging.getLogger(__name__)
-
-def params_to_str(params):
-    if not params:
-        return ""
-    
-    sorted_params = OrderedDict(sorted(params.items()))
-    
-    parts = []
-    for key, value in sorted_params.items():
-        if isinstance(value, (list, tuple)):
-            value = "_".join(str(x) for x in value)
-        elif isinstance(value, bool):
-            value = "T" if value else "F"
-        else:
-            value = str(value)
-        
-        key = key.replace(" ", "_").replace("/", "-")
-        value = value.replace(" ", "_").replace("/", "-")
-        
-        parts.append(f"{key}={value}")
-    
-    return "_".join(parts)
 
 def save_predict(index, model_cfg, dataset_name, prediction, transcription, cfg: DictConfig):
     save_dict = {}
@@ -58,7 +39,7 @@ def save_predict(index, model_cfg, dataset_name, prediction, transcription, cfg:
     save_dict['preiction'] = prediction
     save_dict['transcription'] = transcription
     save_dict['alignment'] = alignment
-    save_to_json(save_dict, os.path.join(cfg.output_dir, cfg.run.name, f"{model_cfg.model}_{dataset_name}_{params_to_str(model_cfg.params)}", f"{index}.json"))    
+    save_to_json(save_dict, os.path.join(cfg.output_dir, cfg.run.name, f"{dataset_name}_{model_cfg.model_name}", f"{index}.json"))    
         
 
 @dataclass
@@ -139,11 +120,18 @@ def load_dataset_from_config(dataset_cfg: DictConfig) -> Dataset:
 
 def initialize_model(model_cfg: DictConfig) -> ASREvalWrapper:
     if model_cfg.model == "whisper":
-        return WhisperLongformWrapper(model_cfg.name)
+        return WhisperLongformWrapper(**model_cfg.params)
     if model_cfg.model == "qwen_audio":
-        return QwenAudioWrapper()
+        return QwenAudioWrapper(**model_cfg.params)
     if model_cfg.model == "woxtral":
-        return VoxtralmWrapper(api=model_cfg.api)
+        return VoxtralmWrapper(**model_cfg.params)
+    if model_cfg.model == "gigaam":
+        return GigaAMWrapper(**model_cfg.params)
+    if model_cfg.model == "gemma":
+        return Gemma3nSTTWrapper(**model_cfg.params)
+    if model_cfg.model == "t_one":
+        return TOneWrapper(**model_cfg.params)
+        
     # Добавьте здесь инициализацию других моделей
     raise ValueError(f"Unknown model: {model_cfg.model}")
 
@@ -184,7 +172,7 @@ def main(cfg: DictConfig) -> None:
         # Итерация по всем моделям
         for model_name in cfg.models:
             model_cfg = cfg.models[model_name]
-            logger.info(f"\n=== Evaluating model: {model_name} on {dataset_name} params {params_to_str(model_cfg.params)} ===")
+            logger.info(f"\n=== Evaluating model: {model_cfg.model_name} on {dataset_name} params ===")
             
             try:
                 model = initialize_model(model_cfg)
