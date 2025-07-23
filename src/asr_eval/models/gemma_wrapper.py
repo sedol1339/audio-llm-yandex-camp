@@ -64,7 +64,7 @@ class Gemma3nSTTWrapper(ASREvalWrapper):
         self.task_prompt = task_prompt
         self.lang = lang,
         
-        self.max_new_tokens = 30000
+        self.max_new_tokens = 50000
         self.model = None
         self.processor = None
 
@@ -94,7 +94,8 @@ class Gemma3nSTTWrapper(ASREvalWrapper):
                 self.model_name,
                 token=self.token,
                 language='Russian' if self.lang == 'ru' else 'English', # type: ignore
-                do_sample = False
+                do_sample = False,
+                temperature = 0.5
             )
             self.model = AutoModelForImageTextToText.from_pretrained( # type: ignore
                 self.model_name,
@@ -140,6 +141,7 @@ class Gemma3nSTTWrapper(ASREvalWrapper):
                     max_new_tokens = self.max_new_tokens,
                     do_sample = False,
                     num_beams = 1,
+                    temperature = 0.5
                 )
             
             # 5. Декодирование и очистка
