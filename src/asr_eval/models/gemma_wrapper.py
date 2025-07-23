@@ -102,7 +102,7 @@ class Gemma3nSTTWrapper(ASREvalWrapper):
         token: str,
         model_name: str = "google/gemma-3n-E4B-it",
         torch_dtype: torch.dtype = torch.bfloat16,
-        task_prompt: str = "Транскрибируй только русскую речь из аудио. Если нет речи - верни пустую строку. Не комментируй.",
+        task_prompt: str = "Транскрибируй только русскую речь из аудио. Проанализируй ВСЁ аудио, если в начале нет речи - не думай, что её там вообще нет. Если ты не нашёл речь - верни пустую строку. Не комментируй. ",
         lang: Literal['ru', 'en'] = 'ru',
         segment_length: float = 30.0,
         segment_shift: float = 15.0,  # Увеличено перекрытие
