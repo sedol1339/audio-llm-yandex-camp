@@ -27,36 +27,38 @@ class VoxtralmWrapper(ASREvalWrapper):
 
     @override
     def transcribe(self, waveform: FLOATS, **kwargs: Any) -> list[TimedText]:
-        if self.is_voxtral_healthy():
-            try:
-                wav_buffer = io.BytesIO()
-                sf.write(wav_buffer, waveform, 16000, format='WAV')  # type: ignore
-                wav_buffer.seek(0)
-                files = {'file': ('audio.wav', wav_buffer, 'audio/wav')}
+        if not self.is_voxtral_healthy():
+            raise RuntimeError("Voxtral model is not healthy or not responding")
+        
+        try:
+            wav_buffer = io.BytesIO()
+            sf.write(wav_buffer, waveform, 16000, format='WAV')  # type: ignore
+            wav_buffer.seek(0)
+            files = {'file': ('audio.wav', wav_buffer, 'audio/wav')}
 
-                data = {
-                    'model': self.model_name,
-                    'language': self.lang,
-                    'prompt': kwargs.get('prompt', ''),
-                    'response_format': 'json',
-                    'temperature': kwargs.get('temperature', 0.5),
-                }
+            data = {
+                'model': self.model_name,
+                'language': self.lang,
+                'prompt': kwargs.get('prompt', ''),
+                'response_format': 'json',
+                'temperature': kwargs.get('temperature', 0.0),
+            }
 
-                with httpx.Client() as client:
-                    response = client.post(
-                        f"{self.api}/audio/transcriptions",
-                        data=data,
-                        files=files,
-                        timeout=30
-                    )
-                    if response.status_code == 200:
-                        json_response = response.json()
-                        text = json_response.get('text', '')
-                        return [TimedText(0, len(waveform) / 16000, text)]
-                    else:
-                        return [TimedText(0, len(waveform) / 16000, f"Error: HTTP {response.status_code}")]
+            with httpx.Client() as client:
+                response = client.post(
+                    f"{self.api}/audio/transcriptions",
+                    data=data,
+                    files=files,
+                    timeout=30
+                )
+                if response.status_code == 200:
+                    json_response = response.json()
+                    text = json_response.get('text', '')
+                    return [TimedText(0, len(waveform) / 16000, text)]
+                else:
+                    raise RuntimeError(f"HTTP error {response.status_code} from Voxtral API")
 
-            except Exception as e:
-                return [TimedText(0, len(waveform) / 16000, f"Error processing audio: {str(e)}")]
-        else:
-            return [TimedText(0, len(waveform) / 16000, "Model doesn't work")]
+        except Exception as e:
+            if isinstance(e, RuntimeError):
+                raise
+            raise RuntimeError(f"Error processing audio with Voxtral: {str(e)}")
