@@ -3,6 +3,7 @@
 import os
 import re
 import torch
+import gc
 import numpy as np
 import soundfile as sf
 from tempfile import NamedTemporaryFile
@@ -102,7 +103,7 @@ class Gemma3nSTTWrapper(ASREvalWrapper):
         token: str,
         model_name: str = "google/gemma-3n-E4B-it",
         torch_dtype: torch.dtype = torch.bfloat16,
-        task_prompt: str = "Транскрибируй только русскую речь из аудио. Проанализируй ВСЁ аудио, если в начале нет речи - не думай, что её там вообще нет. Если ты не нашёл речь - верни пустую строку. Не комментируй. ",
+        task_prompt: str = "Транскрибируй только русскую речь из аудио. Проанализируй ВСЁ аудио, если в начале нет речи - не думай, что её там вообще нет. Если нет речи - верни пустую строку. Не комментируй. ",
         lang: Literal['ru', 'en'] = 'ru',
         segment_length: float = 30.0,
         segment_shift: float = 15.0,  # Увеличено перекрытие
@@ -123,6 +124,14 @@ class Gemma3nSTTWrapper(ASREvalWrapper):
         self.processor = None
         self.retry_count = 2  # Количество попыток при ошибке
 
+    def reset_model(self):
+        del self.model
+        del self.processor
+        self.model = None
+        self.processor = None
+        gc.collect()
+        torch.cuda.empty_cache()
+
     def _waveform_to_temp_wav(self, waveform: FLOATS, sampling_rate: int = 16000) -> str:
         waveform = np.asarray(waveform, dtype=np.float32)
         # Нормализация с защитой от тишины
@@ -142,7 +151,7 @@ class Gemma3nSTTWrapper(ASREvalWrapper):
                 self.model_name,
                 token=self.token,
                 language='Russian' if self.lang == 'ru' else 'English',
-                do_sample=False,
+                do_sample=True,
                 temperature=0.7  # Слегка увеличена случайность
             )
             self.model = AutoModelForImageTextToText.from_pretrained(  
