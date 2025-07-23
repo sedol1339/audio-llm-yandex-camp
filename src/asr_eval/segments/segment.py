@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
+from typing import Self
 
 import numpy as np
 
@@ -37,3 +38,6 @@ class AudioSegment():
         overlap_start = max(self.start_time, other.start_time)
         overlap_end = min(self.end_time, other.end_time)
         return max(0, overlap_end - overlap_start)
+    
+    def shift(self, delta: float) -> Self:
+        return replace(self, start_time=self.start_time + delta, end_time=self.end_time + delta)
