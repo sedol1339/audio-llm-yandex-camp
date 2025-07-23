@@ -100,7 +100,7 @@ def extract_transcript(raw_text):
 class Gemma3nSTTWrapper(ASREvalWrapper):
     def __init__(
         self,
-        token: str,
+        token: str = os.environ.get('HF_GEMMA_TOKEN'),
         model_name: str = "google/gemma-3n-E4B-it",
         torch_dtype: torch.dtype = torch.bfloat16,
         task_prompt: str = "Транскрибируй только русскую речь из аудио. Проанализируй ВСЁ аудио, если в начале нет речи - не думай, что её там вообще нет. Если нет речи - верни пустую строку. Не комментируй. ",
