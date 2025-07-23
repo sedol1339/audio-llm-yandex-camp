@@ -1,131 +1,153 @@
 from typing import cast
-from datasets import load_dataset, load_from_disk, Dataset, concatenate_datasets 
-from datasets import Dataset, Features, Value, Sequence, Audio, load_from_disk
-from datasets import load_dataset, Dataset, Audio, Features, Value
+from datasets import concatenate_datasets 
+from datasets import load_dataset, Dataset, Audio
 from typing import cast
-import numpy as np
-import librosa
-from datasets import Dataset, Audio, Features, Value, load_dataset
-from typing import cast
+
 
 
 # A set of ASR test datasets
 
+# не работает
 def load_youtube_lectures() -> Dataset:
-    SAMPLING_RATE = 16000
-    ds = cast(Dataset, load_dataset(
-        'dangrebenkin/long_audio_youtube_lectures',
-        split='train'
-    ))
-    samples = []
-
-    for i, sample in enumerate(ds):
-        s = {}
-        s['transcription'] = sample['transcription']
-        s['context'] = sample['domain']
-        
-        audio_data = sample['audio']
-        
-        if isinstance(audio_data['array'], list):
-            waveform = np.array(audio_data['array'], dtype=np.float32)
-            sr = audio_data['sampling_rate']
-            
-            # Ресемплируем если нужно
-            if sr != SAMPLING_RATE:
-                waveform = librosa.resample(waveform, orig_sr=sr, target_sr=SAMPLING_RATE)
-                sr = SAMPLING_RATE
-        else:
-            waveform = audio_data['array']
-            sr = audio_data['sampling_rate']
-        
-        s['audio'] = {
-            'array': waveform,
-            'sampling_rate': sr
-        }
-        
-        samples.append(s)
+    # "train" is a single split here
+    # loading dangrebenkin/long_audio_youtube_lectures from HF gives an error with datasets==3.6.0
+    # https://github.com/huggingface/datasets/issues/7676
+    return cast(
+        Dataset,
+        load_dataset('dangrebenkin/long_audio_youtube_lectures', split='train')
+        .cast_column('audio', Audio(sampling_rate=16000)) # type: ignore
+    )
+    # return cast(Dataset, load_from_disk('/asr_datasets/long_audio_youtube_lectures'))
 
 
-    dataset = Dataset.from_dict({
-        'audio': [s['audio'] for s in samples],
-        'transcription': [s['transcription'] for s in samples],
-        'context': [s['context'] for s in samples]
-    }, features=Features({
-        'audio': Audio(sampling_rate=SAMPLING_RATE),
-        'transcription': Value('string'),
-        'context': Value('string')
-    }))
-    
-    return dataset
-
-
+# работает
 def load_golos_farfield() -> Dataset:
-    SAMPLING_RATE = 16000
-    ds = cast(Dataset, load_dataset(
-        'bond005/sberdevices_golos_100h_farfield',
-        split='test'
-    ))
-    samples = []
-
-    for i, sample in enumerate(ds):
-        s = {}
-        s['transcription'] = sample['transription']
-
-        if sample['audio']['sampling_rate'] != 16000:
-            audio_path = sample['audio']
-            waveform, _ = librosa.load(audio_path, sr=SAMPLING_RATE)
-            s['audio'] =  waveform
-
-        samples.append(s)
-
-    dataset = Dataset.from_list(samples, features=Features({ # type: ignore
-        'audio': Audio(decode=True),
-        'transcription': Value('string')
-    }))
-    return dataset
+    return cast(
+        Dataset,
+        load_dataset('bond005/sberdevices_golos_100h_farfield', split='test')
+        .cast_column('audio', Audio(sampling_rate=16000)) # type: ignore
+    )
 
 
+# работает
+def load_rulibrispeech() -> Dataset:
+    return cast(
+        Dataset,
+        load_dataset('bond005/rulibrispeech', split='test')
+        .cast_column('audio', Audio(sampling_rate=16000)) # type: ignore
+    )
 
+
+# работает
+def load_podlodka() -> Dataset:
+    return cast(
+        Dataset,
+        load_dataset('bond005/podlodka_speech', split='test')
+        .cast_column('audio', Audio(sampling_rate=16000)) # type: ignore
+    )
+
+
+# работает
+def load_podlodka_full() -> Dataset:
+    return concatenate_datasets([
+        cast(
+            Dataset,
+            load_dataset('bond005/podlodka_speech', split='test')
+            .cast_column('audio', Audio(sampling_rate=16000)) # type: ignore
+        ),
+        cast(
+            Dataset,
+            load_dataset('bond005/podlodka_speech', split='train')
+            .cast_column('audio', Audio(sampling_rate=16000)) # type: ignore
+        ),
+        cast(
+            Dataset,
+            load_dataset('bond005/podlodka_speech', split='validation')
+            .cast_column('audio', Audio(sampling_rate=16000)) # type: ignore
+        ),
+    ])
+
+
+
+
+# работает
+def load_sova_rudevices() -> Dataset:
+    return cast(
+        Dataset,
+        load_dataset('bond005/sova_rudevices', split='test')
+        .cast_column('audio', Audio(sampling_rate=16000)) # type: ignore
+    )
+
+
+
+# работает
 def load_resd() -> Dataset:
-    SAMPLING_RATE = 16000
-    ds = (
+    return (
         cast(Dataset, load_dataset('Aniemore/resd_annotated', split='test'))
         .rename_column('text', 'transcription')
         .rename_column('speech', 'audio')
+        .cast_column('audio', Audio(sampling_rate=16000)) # type: ignore
     )
-    samples = []
 
-    for sample in ds:
-        s = {}
-        s['transcription'] = sample['transcription']
-        s['context'] = ''
-        
-        # Получаем аудиоданные
-        audio_data = sample['audio']
-        
-        if audio_data['sampling_rate'] != SAMPLING_RATE:
-            # Если частота не 16 кГц, ресемплируем массив напрямую
-            waveform = librosa.resample(
-                audio_data['array'], 
-                orig_sr=audio_data['sampling_rate'], 
-                target_sr=SAMPLING_RATE
-            )
-            s['audio'] = {
-                'array': waveform,
-                'sampling_rate': SAMPLING_RATE,
-                'path': audio_data.get('path', '')  # Сохраняем путь, если есть
-            }
-        else:
-            # Если частота уже 16 кГц, используем как есть
-            s['audio'] = audio_data
-        
 
-            
-        samples.append(s)
 
-    dataset = Dataset.from_list(samples, features=Features({
-        'audio': Audio(sampling_rate=SAMPLING_RATE),
-        'transcription': Value('string'),
-        'context': Value('string')
-    }))
-    return dataset
+# не работает RuntimeError: Dataset scripts are no longer supported, but found fleurs.py
+def load_fleurs() -> Dataset:
+    return (
+        cast(Dataset, load_dataset(
+            'google/fleurs',
+            name='ru_ru',
+            split='test',
+            trust_remote_code=True,
+        ))
+        .remove_columns('transcription')
+        .rename_column('raw_transcription', 'transcription')
+        .cast_column('audio', Audio(sampling_rate=16000)) # type: ignore
+    )
+
+
+
+# работает, надо авторизоваться
+def load_speech_massive() -> Dataset:
+    return (
+        cast(Dataset, load_dataset(
+            'FBK-MT/Speech-MASSIVE-test',
+            name='ru-RU',
+            split='test',
+        ))
+        .rename_column('utt', 'transcription')
+        .cast_column('audio', Audio(sampling_rate=16000)) # type: ignore
+    )
+
+
+
+# не работает RuntimeError: Dataset scripts are no longer supported, but found common_voice_17_0.py
+def load_common_voice_17_0() -> Dataset:
+    return (
+        cast(Dataset, load_dataset(
+            'mozilla-foundation/common_voice_17_0',
+            name='ru',
+            split='test',
+            trust_remote_code=True,
+        ))
+        .rename_column('sentence', 'transcription')
+        .cast_column('audio', Audio(sampling_rate=16000)) # type: ignore
+    )
+
+
+
+
+
+def load_wikipedia_asr_splitted() -> DatasetDict:
+    return (
+        cast(DatasetDict, load_dataset('rmndrnts/wikipedia_asr_splitted'))
+        .cast_column('audio', Audio(sampling_rate=16000)) # type: ignore
+    )
+
+
+
+def load_rmndrnts_lena_dataset() -> DatasetDict:
+    return (
+        cast(DatasetDict, load_dataset('rmndrnts/lena_dataset_splitted'))
+        .cast_column('audio', Audio(sampling_rate=16000)) # type: ignore
+    )
