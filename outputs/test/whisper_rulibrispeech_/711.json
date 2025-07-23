@@ -1,0 +1,157 @@
+{
+    "preiction": " на дубой 3,5.",
+    "transcription": "луна Над боем трижды подымалась",
+    "alignment": {
+        "_target_": "src.asr_eval.align.data.MatchesList",
+        "matches": [
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "луна",
+                    "uid": "e86094d5-6eac-4050-b2ed-19ab5a9c7432",
+                    "start_pos": 0,
+                    "end_pos": 4,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "на",
+                    "uid": "0d484443-7ace-4960-af96-6749eeafdb49",
+                    "start_pos": 1,
+                    "end_pos": 3,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "deletion",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 1,
+                    "n_correct": 0,
+                    "n_char_errors": 2
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "над",
+                    "uid": "a90816b9-8e44-4862-a2ec-58dc1e028df5",
+                    "start_pos": 5,
+                    "end_pos": 8,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": null,
+                "status": "insertion",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 1,
+                    "n_correct": 0,
+                    "n_char_errors": 3
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "боем",
+                    "uid": "3c346d25-7586-42ef-8051-733d069b42f6",
+                    "start_pos": 9,
+                    "end_pos": 13,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "дубой",
+                    "uid": "a87cd434-4b2f-438f-9bae-2a4a4cc8e62a",
+                    "start_pos": 4,
+                    "end_pos": 9,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "deletion",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 1,
+                    "n_correct": 0,
+                    "n_char_errors": 4
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "трижды",
+                    "uid": "45a0fb39-3fef-4df3-83fa-b61c5fef13dd",
+                    "start_pos": 14,
+                    "end_pos": 20,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "3",
+                    "uid": "4ecdd826-9093-4b4f-8883-edbc6d98e8f0",
+                    "start_pos": 10,
+                    "end_pos": 11,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "deletion",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 1,
+                    "n_correct": 0,
+                    "n_char_errors": 6
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "подымалась",
+                    "uid": "584a69d4-64bd-4c82-be72-5f3ed8ac9b37",
+                    "start_pos": 21,
+                    "end_pos": 31,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "5",
+                    "uid": "c875a2ef-ae70-43df-bb3b-c513d8e85a22",
+                    "start_pos": 12,
+                    "end_pos": 13,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "deletion",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 1,
+                    "n_correct": 0,
+                    "n_char_errors": 10
+                }
+            }
+        ],
+        "total_true_len": 5,
+        "score": {
+            "_target_": "src.asr_eval.align.data.AlignmentScore",
+            "n_word_errors": 5,
+            "n_correct": 0,
+            "n_char_errors": 25
+        }
+    }
+}

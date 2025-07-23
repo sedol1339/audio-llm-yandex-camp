@@ -1,0 +1,127 @@
+{
+    "preiction": " Нахмуре с голова встречала!",
+    "transcription": "- Нахмурясь, голова вскричала.",
+    "alignment": {
+        "_target_": "src.asr_eval.align.data.MatchesList",
+        "matches": [
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "нахмурясь",
+                    "uid": "8a9587fb-9151-4b11-b31c-4aa98419faf4",
+                    "start_pos": 2,
+                    "end_pos": 11,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "нахмуре",
+                    "uid": "0c7a066f-06c8-4faa-8218-d4c3aed4824a",
+                    "start_pos": 1,
+                    "end_pos": 8,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "deletion",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 1,
+                    "n_correct": 0,
+                    "n_char_errors": 3
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": null,
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "с",
+                    "uid": "e50e34c6-93e0-41b7-9bfa-b90e262a410b",
+                    "start_pos": 9,
+                    "end_pos": 10,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "deletion",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 1,
+                    "n_correct": 0,
+                    "n_char_errors": 1
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "голова",
+                    "uid": "adc0f2e6-b4ca-4729-9c2e-8334028f0db4",
+                    "start_pos": 13,
+                    "end_pos": 19,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "голова",
+                    "uid": "56978319-70c7-4103-8e6b-138d06f010d2",
+                    "start_pos": 11,
+                    "end_pos": 17,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "correct",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 0,
+                    "n_correct": 1,
+                    "n_char_errors": 0
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "вскричала",
+                    "uid": "eb17b209-f1f0-417b-8796-3c571e8d646f",
+                    "start_pos": 20,
+                    "end_pos": 29,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "встречала",
+                    "uid": "a31f1399-eeac-4aa5-8c3f-f1875b00ab52",
+                    "start_pos": 18,
+                    "end_pos": 27,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "deletion",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 1,
+                    "n_correct": 0,
+                    "n_char_errors": 2
+                }
+            }
+        ],
+        "total_true_len": 3,
+        "score": {
+            "_target_": "src.asr_eval.align.data.AlignmentScore",
+            "n_word_errors": 3,
+            "n_correct": 1,
+            "n_char_errors": 6
+        }
+    }
+}

@@ -1,0 +1,247 @@
+{
+    "preiction": " Идет направо, песнь заводит. На лево скаску говорит.",
+    "transcription": "Идет направо - песнь заводит, Налево - сказку говорит.",
+    "alignment": {
+        "_target_": "src.asr_eval.align.data.MatchesList",
+        "matches": [
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "идет",
+                    "uid": "c5cccff1-32bb-4190-87dd-d924c25e9cbf",
+                    "start_pos": 0,
+                    "end_pos": 4,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "идет",
+                    "uid": "c9cbb9fa-5566-467e-a9e3-9db9fa17f2f3",
+                    "start_pos": 1,
+                    "end_pos": 5,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "correct",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 0,
+                    "n_correct": 1,
+                    "n_char_errors": 0
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "направо",
+                    "uid": "3ad9e3db-378c-4a18-bcd8-e07a67464c90",
+                    "start_pos": 5,
+                    "end_pos": 12,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "направо",
+                    "uid": "598699b8-c823-49ee-889f-2f10f51774ab",
+                    "start_pos": 6,
+                    "end_pos": 13,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "correct",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 0,
+                    "n_correct": 1,
+                    "n_char_errors": 0
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "песнь",
+                    "uid": "6113986a-39e9-49c7-acbf-a537dbbccbf9",
+                    "start_pos": 15,
+                    "end_pos": 20,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "песнь",
+                    "uid": "f28df514-0fcb-46c1-8cd3-f6390f5f395e",
+                    "start_pos": 15,
+                    "end_pos": 20,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "correct",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 0,
+                    "n_correct": 1,
+                    "n_char_errors": 0
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "заводит",
+                    "uid": "bb6229c6-3831-4237-ab01-f146694259c8",
+                    "start_pos": 21,
+                    "end_pos": 28,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "заводит",
+                    "uid": "ff781293-6ace-45f8-a8ed-ce3a8d1e55b4",
+                    "start_pos": 21,
+                    "end_pos": 28,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "correct",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 0,
+                    "n_correct": 1,
+                    "n_char_errors": 0
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": null,
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "на",
+                    "uid": "636604b2-116e-4fd3-adb4-42a228119e2a",
+                    "start_pos": 30,
+                    "end_pos": 32,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "deletion",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 1,
+                    "n_correct": 0,
+                    "n_char_errors": 2
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "налево",
+                    "uid": "16566d6c-76a8-4750-9c3f-2d33f61c0de3",
+                    "start_pos": 30,
+                    "end_pos": 36,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "лево",
+                    "uid": "89af5372-2e9b-4b47-a773-04552abd5029",
+                    "start_pos": 33,
+                    "end_pos": 37,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "deletion",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 1,
+                    "n_correct": 0,
+                    "n_char_errors": 2
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "сказку",
+                    "uid": "301ff221-6280-4ac9-9148-1ea8c016230e",
+                    "start_pos": 39,
+                    "end_pos": 45,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "скаску",
+                    "uid": "223cb708-7d91-437f-b315-c2ba9f456ce6",
+                    "start_pos": 38,
+                    "end_pos": 44,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "deletion",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 1,
+                    "n_correct": 0,
+                    "n_char_errors": 1
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "говорит",
+                    "uid": "1d286edc-10d3-4002-9d23-b9abac728e0b",
+                    "start_pos": 46,
+                    "end_pos": 53,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "говорит",
+                    "uid": "f83d5812-d332-4e50-bbb3-58b84de61e70",
+                    "start_pos": 45,
+                    "end_pos": 52,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "correct",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 0,
+                    "n_correct": 1,
+                    "n_char_errors": 0
+                }
+            }
+        ],
+        "total_true_len": 7,
+        "score": {
+            "_target_": "src.asr_eval.align.data.AlignmentScore",
+            "n_word_errors": 3,
+            "n_correct": 5,
+            "n_char_errors": 5
+        }
+    }
+}

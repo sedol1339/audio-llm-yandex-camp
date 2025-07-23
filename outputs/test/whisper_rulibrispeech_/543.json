@@ -1,0 +1,328 @@
+{
+    "preiction": " на микрощес и с высока шумя летить на княде снова.",
+    "transcription": "На миг исчез - и свысока Шумя летит на князя снова.",
+    "alignment": {
+        "_target_": "src.asr_eval.align.data.MatchesList",
+        "matches": [
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "на",
+                    "uid": "0a3790ec-6900-4a2d-9935-36fa07a9a4b2",
+                    "start_pos": 0,
+                    "end_pos": 2,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "на",
+                    "uid": "aea1aa9e-0b14-405f-98d0-61e887f78026",
+                    "start_pos": 1,
+                    "end_pos": 3,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "correct",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 0,
+                    "n_correct": 1,
+                    "n_char_errors": 0
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "миг",
+                    "uid": "15fd8522-290a-4d78-8319-df7001ff7337",
+                    "start_pos": 3,
+                    "end_pos": 6,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": null,
+                "status": "insertion",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 1,
+                    "n_correct": 0,
+                    "n_char_errors": 3
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "исчез",
+                    "uid": "80f56f41-3f4d-4de1-af0b-fecd686acfc8",
+                    "start_pos": 7,
+                    "end_pos": 12,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "микрощес",
+                    "uid": "38afa183-9e32-4f65-a2cc-bc111da0784a",
+                    "start_pos": 4,
+                    "end_pos": 12,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "deletion",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 1,
+                    "n_correct": 0,
+                    "n_char_errors": 6
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "и",
+                    "uid": "6d751daa-f529-4c5e-8acf-ec5c4bf424f5",
+                    "start_pos": 15,
+                    "end_pos": 16,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "и",
+                    "uid": "d7b160c1-3c6f-46de-a49b-8abf3b41b627",
+                    "start_pos": 13,
+                    "end_pos": 14,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "correct",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 0,
+                    "n_correct": 1,
+                    "n_char_errors": 0
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": null,
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "с",
+                    "uid": "e62cc5ed-2ae0-4b53-b309-979324221a68",
+                    "start_pos": 15,
+                    "end_pos": 16,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "deletion",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 1,
+                    "n_correct": 0,
+                    "n_char_errors": 1
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "свысока",
+                    "uid": "c018ba9e-9aa1-4e7e-b945-ee05f618201c",
+                    "start_pos": 17,
+                    "end_pos": 24,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "высока",
+                    "uid": "5952ccf1-3767-42e1-9bcb-032e5ced01a8",
+                    "start_pos": 17,
+                    "end_pos": 23,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "deletion",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 1,
+                    "n_correct": 0,
+                    "n_char_errors": 1
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "шумя",
+                    "uid": "08379a99-f6b2-46c9-81eb-51d042b48eed",
+                    "start_pos": 25,
+                    "end_pos": 29,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "шумя",
+                    "uid": "999348b2-b535-4973-a5c0-1a6bcfdbe866",
+                    "start_pos": 24,
+                    "end_pos": 28,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "correct",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 0,
+                    "n_correct": 1,
+                    "n_char_errors": 0
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "летит",
+                    "uid": "cd84d93f-4cdd-4a3f-9011-163bed677d1e",
+                    "start_pos": 30,
+                    "end_pos": 35,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "летить",
+                    "uid": "c65e8c4f-db48-4b6f-8480-ed4e2859e972",
+                    "start_pos": 29,
+                    "end_pos": 35,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "deletion",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 1,
+                    "n_correct": 0,
+                    "n_char_errors": 1
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "на",
+                    "uid": "7d6ad7cc-f640-4955-8c75-cd426cbab798",
+                    "start_pos": 36,
+                    "end_pos": 38,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "на",
+                    "uid": "e7e5ebff-c957-42f0-8454-adf473ace408",
+                    "start_pos": 36,
+                    "end_pos": 38,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "correct",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 0,
+                    "n_correct": 1,
+                    "n_char_errors": 0
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "князя",
+                    "uid": "baf74d55-b761-4c16-b5cb-e1bf7d02ea4f",
+                    "start_pos": 39,
+                    "end_pos": 44,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "княде",
+                    "uid": "294e8dc3-22c9-4206-86bb-689830c68483",
+                    "start_pos": 39,
+                    "end_pos": 44,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "deletion",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 1,
+                    "n_correct": 0,
+                    "n_char_errors": 2
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "снова",
+                    "uid": "b2c97281-c17f-4b8d-b46e-9c8d94c428f2",
+                    "start_pos": 45,
+                    "end_pos": 50,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "снова",
+                    "uid": "3f184d5d-cd60-412e-a2bc-681e33bc39c5",
+                    "start_pos": 45,
+                    "end_pos": 50,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "correct",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 0,
+                    "n_correct": 1,
+                    "n_char_errors": 0
+                }
+            }
+        ],
+        "total_true_len": 10,
+        "score": {
+            "_target_": "src.asr_eval.align.data.AlignmentScore",
+            "n_word_errors": 6,
+            "n_correct": 5,
+            "n_char_errors": 14
+        }
+    }
+}

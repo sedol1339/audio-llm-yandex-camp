@@ -1,0 +1,166 @@
+{
+    "preiction": " Киевляне толпят шностей не грошкой.",
+    "transcription": "Киевляне Толпятся на стене градской.",
+    "alignment": {
+        "_target_": "src.asr_eval.align.data.MatchesList",
+        "matches": [
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "киевляне",
+                    "uid": "4741d329-a747-4b10-94cb-0bad7fb2ce37",
+                    "start_pos": 0,
+                    "end_pos": 8,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "киевляне",
+                    "uid": "736089ab-77e4-46c8-b5ce-42ea6bc5fedd",
+                    "start_pos": 1,
+                    "end_pos": 9,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "correct",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 0,
+                    "n_correct": 1,
+                    "n_char_errors": 0
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "толпятся",
+                    "uid": "e8c8565f-5a4e-4c46-a1ea-c002b25c0bd7",
+                    "start_pos": 9,
+                    "end_pos": 17,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "толпят",
+                    "uid": "0b926c54-b05e-45e1-9a0c-229adbe96e70",
+                    "start_pos": 10,
+                    "end_pos": 16,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "deletion",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 1,
+                    "n_correct": 0,
+                    "n_char_errors": 2
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "на",
+                    "uid": "ad36600a-1188-4bc8-bc37-04ff4515b392",
+                    "start_pos": 18,
+                    "end_pos": 20,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "шностей",
+                    "uid": "6111ddf3-e18b-4519-bc97-71d44d23fb6e",
+                    "start_pos": 17,
+                    "end_pos": 24,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "deletion",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 1,
+                    "n_correct": 0,
+                    "n_char_errors": 6
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "стене",
+                    "uid": "5e82c8e2-5214-4b6c-acd1-7632b2549ef1",
+                    "start_pos": 21,
+                    "end_pos": 26,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "не",
+                    "uid": "db97d557-055f-42e3-8c40-68a2fa7510f4",
+                    "start_pos": 25,
+                    "end_pos": 27,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "deletion",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 1,
+                    "n_correct": 0,
+                    "n_char_errors": 3
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "градской",
+                    "uid": "5fb19844-ec98-4c4e-b32d-cd94bfc1a02b",
+                    "start_pos": 27,
+                    "end_pos": 35,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "грошкой",
+                    "uid": "e1dc6066-34dd-427b-b4f4-604a4ec39251",
+                    "start_pos": 28,
+                    "end_pos": 35,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "deletion",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 1,
+                    "n_correct": 0,
+                    "n_char_errors": 3
+                }
+            }
+        ],
+        "total_true_len": 5,
+        "score": {
+            "_target_": "src.asr_eval.align.data.AlignmentScore",
+            "n_word_errors": 4,
+            "n_correct": 1,
+            "n_char_errors": 14
+        }
+    }
+}

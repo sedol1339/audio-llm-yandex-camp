@@ -1,0 +1,256 @@
+{
+    "preiction": " В лесах осенью ветра свист, певец пернатых заглушает.",
+    "transcription": "В лесах осенний ветра свист Певиц пернатых заглушает",
+    "alignment": {
+        "_target_": "src.asr_eval.align.data.MatchesList",
+        "matches": [
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "в",
+                    "uid": "971cd872-3ca8-4c9e-8dca-13a8e4a576e1",
+                    "start_pos": 0,
+                    "end_pos": 1,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "в",
+                    "uid": "c7cdb425-4253-4b4f-8b94-f84aa96bc6f2",
+                    "start_pos": 1,
+                    "end_pos": 2,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "correct",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 0,
+                    "n_correct": 1,
+                    "n_char_errors": 0
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "лесах",
+                    "uid": "68f768e7-025b-4dd5-9cb9-9f21a9664be9",
+                    "start_pos": 2,
+                    "end_pos": 7,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "лесах",
+                    "uid": "06abd281-4492-49e4-88e8-c25bdcf746b4",
+                    "start_pos": 3,
+                    "end_pos": 8,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "correct",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 0,
+                    "n_correct": 1,
+                    "n_char_errors": 0
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "осенний",
+                    "uid": "83a2e537-ebe6-4134-8fe5-d890cf6275ff",
+                    "start_pos": 8,
+                    "end_pos": 15,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "осенью",
+                    "uid": "b82c7b2a-61db-4d22-a28f-5dcf80b05a96",
+                    "start_pos": 9,
+                    "end_pos": 15,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "deletion",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 1,
+                    "n_correct": 0,
+                    "n_char_errors": 3
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "ветра",
+                    "uid": "dba3479a-51d8-4e15-bb73-d93dc6466f6d",
+                    "start_pos": 16,
+                    "end_pos": 21,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "ветра",
+                    "uid": "015c0e42-81db-40f8-8eab-ffe3bea3dd26",
+                    "start_pos": 16,
+                    "end_pos": 21,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "correct",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 0,
+                    "n_correct": 1,
+                    "n_char_errors": 0
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "свист",
+                    "uid": "b3ab8e1a-c5a0-4cd8-9579-7d9e7054aaae",
+                    "start_pos": 22,
+                    "end_pos": 27,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "свист",
+                    "uid": "b57d3095-5b58-4398-a6cb-d1d9c28b0554",
+                    "start_pos": 22,
+                    "end_pos": 27,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "correct",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 0,
+                    "n_correct": 1,
+                    "n_char_errors": 0
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "певиц",
+                    "uid": "e1f00258-892d-4e38-91f7-78a4d1ba951b",
+                    "start_pos": 28,
+                    "end_pos": 33,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "певец",
+                    "uid": "a699a21f-7ca3-4c6a-b47c-ee5aaced7110",
+                    "start_pos": 29,
+                    "end_pos": 34,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "deletion",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 1,
+                    "n_correct": 0,
+                    "n_char_errors": 1
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "пернатых",
+                    "uid": "3aeee2f1-6998-4e7f-9204-3a7a17ccaa94",
+                    "start_pos": 34,
+                    "end_pos": 42,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "пернатых",
+                    "uid": "62858680-e0af-4211-9f94-1003791a2c35",
+                    "start_pos": 35,
+                    "end_pos": 43,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "correct",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 0,
+                    "n_correct": 1,
+                    "n_char_errors": 0
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "заглушает",
+                    "uid": "68cec7ec-5301-483c-9bd0-d8a307f8254e",
+                    "start_pos": 43,
+                    "end_pos": 52,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "заглушает",
+                    "uid": "5136eee0-a980-499d-b632-42d5ac8fd07b",
+                    "start_pos": 44,
+                    "end_pos": 53,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "correct",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 0,
+                    "n_correct": 1,
+                    "n_char_errors": 0
+                }
+            }
+        ],
+        "total_true_len": 8,
+        "score": {
+            "_target_": "src.asr_eval.align.data.AlignmentScore",
+            "n_word_errors": 2,
+            "n_correct": 6,
+            "n_char_errors": 4
+        }
+    }
+}
