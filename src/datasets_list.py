@@ -3,8 +3,6 @@ from datasets import concatenate_datasets
 from datasets import load_dataset, Dataset, Audio
 from typing import cast
 
-
-
 # A set of ASR test datasets
 
 # не работает
@@ -68,8 +66,6 @@ def load_podlodka_full() -> Dataset:
     ])
 
 
-
-
 # работает
 def load_sova_rudevices() -> Dataset:
     return cast(
@@ -77,7 +73,6 @@ def load_sova_rudevices() -> Dataset:
         load_dataset('bond005/sova_rudevices', split='test')
         .cast_column('audio', Audio(sampling_rate=16000)) # type: ignore
     )
-
 
 
 # работает
@@ -88,7 +83,6 @@ def load_resd() -> Dataset:
         .rename_column('speech', 'audio')
         .cast_column('audio', Audio(sampling_rate=16000)) # type: ignore
     )
-
 
 
 # не работает RuntimeError: Dataset scripts are no longer supported, but found fleurs.py
@@ -106,7 +100,6 @@ def load_fleurs() -> Dataset:
     )
 
 
-
 # работает, надо авторизоваться
 def load_speech_massive() -> Dataset:
     return (
@@ -118,7 +111,6 @@ def load_speech_massive() -> Dataset:
         .rename_column('utt', 'transcription')
         .cast_column('audio', Audio(sampling_rate=16000)) # type: ignore
     )
-
 
 
 # не работает RuntimeError: Dataset scripts are no longer supported, but found common_voice_17_0.py
@@ -135,9 +127,7 @@ def load_common_voice_17_0() -> Dataset:
     )
 
 
-
-
-
+# работает
 def load_wikipedia_asr_splitted() -> DatasetDict:
     return (
         cast(DatasetDict, load_dataset('rmndrnts/wikipedia_asr_splitted'))
@@ -145,7 +135,7 @@ def load_wikipedia_asr_splitted() -> DatasetDict:
     )
 
 
-
+# работает
 def load_rmndrnts_lena_dataset() -> DatasetDict:
     return (
         cast(DatasetDict, load_dataset('rmndrnts/lena_dataset_splitted'))
