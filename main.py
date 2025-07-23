@@ -143,7 +143,7 @@ def initialize_model(model_cfg: DictConfig) -> ASREvalWrapper:
     if model_cfg.model == "qwen_audio":
         return QwenAudioWrapper()
     if model_cfg.model == "woxtral":
-        return VoxtralmWrapper()
+        return VoxtralmWrapper(api=model_cfg.api)
     # Добавьте здесь инициализацию других моделей
     raise ValueError(f"Unknown model: {model_cfg.model}")
 
