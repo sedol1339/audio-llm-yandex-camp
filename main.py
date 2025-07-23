@@ -24,6 +24,7 @@ from src.serialize import save_to_json
 from tqdm import tqdm
 from collections import OrderedDict
 from src.asr_eval.models.qwen_audio_wrapper import QwenAudioWrapper
+from src.asr_eval.models.voxtral_wrapper import VoxtralmWrapper
 
 # Настройка логгера
 logger = logging.getLogger(__name__)
@@ -141,6 +142,8 @@ def initialize_model(model_cfg: DictConfig) -> ASREvalWrapper:
         return WhisperLongformWrapper(model_cfg.name)
     if model_cfg.model == "qwen_audio":
         return QwenAudioWrapper()
+    if model_cfg.model == "woxtral":
+        return VoxtralmWrapper()
     # Добавьте здесь инициализацию других моделей
     raise ValueError(f"Unknown model: {model_cfg.model}")
 
