@@ -53,6 +53,12 @@ class VoxtralWrapper(ASREvalWrapper):
         finally:
             os.unlink(temp_path)
 
+    
+    @override
+    def __call__(self, waveforms: list[FLOATS], **kwargs: Any) -> list[str]:
+        return [self.transcribe(waveform, **kwargs)[0].text for waveform in waveforms]
+
+
     @override
     def transcribe(self, waveform: FLOATS, **kwargs: Any) -> list[TimedText]:
         if not self.is_voxtral_healthy():
