@@ -86,7 +86,9 @@ def get_predictions(
     context: Optional[AbsContext] = StringContext("")
 ) -> List[str]:
     predictions = []
-    for index, sample in tqdm(enumerate(dataset)):
+    for index, sample in enumerate(tqdm(dataset)):
+        if index >= 20:
+            break
         audio: FLOATS = sample['audio']['array']
         sample_rate: int = sample['audio']['sampling_rate']
         transforms = torchaudio.transforms.Resample(orig_freq=sample_rate, new_freq=cfg.sample_rate)
