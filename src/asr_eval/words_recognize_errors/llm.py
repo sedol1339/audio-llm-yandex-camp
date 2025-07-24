@@ -24,10 +24,8 @@ class TextGenerator:
         """
         # The prompt format required by the Gemma model.
         prompt_template = (
-            "<start_of_turn>user\n"
             "Напиши одно короткое, реалистичное предложение на русском языке, которое естественным образом включает слово '{word}'. "
             "Предложение должно звучать так, как будто его сказал обычный человек. Не пиши ничего кроме этого предложения."
-            "<end_of_turn>\n<start_of_turn>model\n"
         )
         prompt = prompt_template.format(word=word)
 
@@ -38,4 +36,3 @@ class TextGenerator:
 
         outputs = self.model.generate(input_ids, max_new_tokens=1024)
         return self.tokenizer.decode(outputs[0][input_ids.size(1) :], skip_special_tokens=True)
-        

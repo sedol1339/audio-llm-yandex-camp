@@ -1,7 +1,9 @@
-from llm import TextGenerator
 from logging import getLogger
-logger = getLogger('text generator')
- 
+
+from .llm import TextGenerator
+
+logger = getLogger("text generator")
+
 
 def generate_texts(domain_words: list[str]) -> list[str]:
     """
@@ -10,12 +12,16 @@ def generate_texts(domain_words: list[str]) -> list[str]:
     # Initialize our text generation agent.
     logger.info("Начало генерации предложений")
     generator = TextGenerator()
-    sentences:list[str] = []
+    sentences: list[str] = []
     for word in domain_words:
         try:
-            sentence:str = generator.generate_sentence(word)
+            sentence: str = generator.generate_sentence(word)
             sentences.append(sentence)
-            logger.info(f"Сгенерировано предложения. Слово: '{word}' -> Предложение: {sentence[:30]}")
+            logger.info(
+                f"Сгенерировано предложения. Слово: '{word}' -> Предложение: {sentence[:30]}"
+            )
         except Exception as e:
-            logger.error(f"Не удалось сгенерировать предложение для слова '{word}': {e}")
+            logger.error(
+                f"Не удалось сгенерировать предложение для слова '{word}': {e}"
+            )
     return sentences
