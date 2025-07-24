@@ -1,4 +1,4 @@
-from typing import Literal, Any
+from typing import Literal, Any, List, Optional
 import httpx
 import io
 import soundfile as sf

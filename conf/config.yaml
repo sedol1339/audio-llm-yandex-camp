@@ -1,0 +1,14 @@
+defaults:
+  - datasets@_here_: datasets
+  - models@_here_: models
+  - _self_
+
+run:
+  name: test
+
+output_dir: ./outputs
+
+metrics_list:
+  - "wer"
+
+sample_rate: 16000
