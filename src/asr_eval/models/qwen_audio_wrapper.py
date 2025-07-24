@@ -6,7 +6,7 @@ import numpy as np
 from transformers import Qwen2AudioForConditionalGeneration, AutoProcessor
 
 # Ваши базовые классы и функции для чанкинга
-from .base import ASREvalWrapper
+from .base import ASREvalWrapper, TimedText
 from ..utils.types import FLOATS
 from ..segments.chunking import chunk_audio
 
@@ -105,7 +105,12 @@ class QwenAudioWrapper(ASREvalWrapper):
             overlap_len = find_overlap(full_text, transcripts[i])
             full_text += transcripts[i][overlap_len:]
         return full_text
-        
+    
+
+    @override
+    def transcribe(self, waveform: FLOATS, **kwargs: Any) -> list[TimedText]:
+        return [TimedText(0, len(waveform) / SAMPLING_RATE, self.__call__([waveform]))]
+
     @override
     @torch.inference_mode()
     def __call__(self, waveforms: list[FLOATS]) -> list[str]:
