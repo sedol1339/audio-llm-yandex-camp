@@ -97,9 +97,6 @@ class VoxtralWrapper(ASREvalWrapper):
             base_prompt = kwargs.get('prompt')
             prev_transcription = kwargs.get('prev_transcription')
 
-            print(f"base_prompt: {base_prompt}")
-            print(f"prev_transcription: {prev_transcription}")
-            
             if prev_transcription:
                 if base_prompt:
                     full_prompt = f"{base_prompt}. Предыдущая транскрипция, которую ты можешь использовать для улучшения транскрипции: {prev_transcription}."
@@ -109,10 +106,8 @@ class VoxtralWrapper(ASREvalWrapper):
                 full_prompt = base_prompt
 
             full_prompt = f"{system_prompt}.Сгенерированная транскрипция аудио из аудиофайла: {text}.Используй ее для улучшения транскрипции. {full_prompt}"
-            print(f"full_prompt: {full_prompt}")
             
             text_chunk = TextChunk(text=full_prompt)
-            print(f"text_chunk: {text_chunk}")
             
             user_msg = UserMessage(content=[audio_chunk, text_chunk]).to_openai()
             
