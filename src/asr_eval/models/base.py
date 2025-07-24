@@ -64,23 +64,30 @@ class QwenAudio(AbstractShortformAudioLLM):
         ... # TODO
 
 
-class Voxtral(AbstractShortformAudioLLM):
-    def run_audio_llm_inference(self, prompt: str, waveform: FLOATS) -> str:
-        ... # TODO
 
+class Voxtral(AbstractShortformAudioLLM):
+    def __init__(self, **kwargs: Any):
+        from .voxtral_wrapper import VoxtralmWrapper
+        self.wrapper = VoxtralmWrapper(**kwargs)
+    
+    def run_audio_llm_inference(self, prompt: str, waveform: FLOATS) -> str:
+        result = self.wrapper.transcribe(waveform, prompt=prompt)
+        return result[0].text if result else ""
+    
 
 class Longform(ASREvalWrapper):
     def __init__(self, shortform_model: ASREvalWrapper):
         self.model = shortform_model
         
     def get_segment_boundaries(self, waveform: FLOATS) -> list[AudioSegment]:
+        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         _, boundaries = gigaam_segment_audio(
             torch.tensor(waveform * 32768, dtype=torch.int16).clone(),
             16_000,
             max_duration=22.,
             min_duration=15.,
             new_chunk_threshold=0.2,
-            device='cuda' if torch.cuda.is_available() else 'cpu',
+            device=device,
         )
         return [
             AudioSegment(segment_start, segment_end)
@@ -92,8 +99,14 @@ class Longform(ASREvalWrapper):
         segments = self.get_segment_boundaries(waveform)
         
         transcriptions: list[TimedText] = []
-        for segment in segments:
-            preds = self.model.transcribe(waveform[segment.slice()], **kwargs)
+        for i, segment in enumerate(segments):
+            segment_waveform = waveform[segment.slice()]
+            
+            if len(segment_waveform) < 100:
+                print(f"Warning: Skipping segment {i+1} with {len(segment_waveform)} samples (too short)")
+                continue
+                
+            preds = self.model.transcribe(segment_waveform, **kwargs)
             transcriptions += [p.shift(segment.start_time) for p in preds]
             
         return transcriptions
@@ -103,15 +116,32 @@ class RecurrentContextLongform(Longform):
     '''
     A wrapper around a shortform model that accepts 'prev_transcription' argument in `transcribe`
     '''
+    def __init__(self, shortform_model: ASREvalWrapper, max_history_words: int = 10):
+        super().__init__(shortform_model)
+        self.max_history_words = max_history_words
+    
     @override
     def transcribe(self, waveform: FLOATS, **kwargs: Any) -> list[TimedText]:
         segments = self.get_segment_boundaries(waveform)
         
         transcriptions: list[TimedText] = []
-        for segment in segments:
+        for i, segment in enumerate(segments):
+            segment_waveform = waveform[segment.slice()]
+            
+            if len(segment_waveform) < 100:
+                print(f"Warning: Skipping segment {i+1} with {len(segment_waveform)} samples (too short)")
+                continue
+            
+            full_history = ' '.join(t.text for t in transcriptions)
+            words = full_history.split()
+            if len(words) > self.max_history_words:
+                limited_history = ' '.join(words[-self.max_history_words:])
+            else:
+                limited_history = full_history
+                
             preds = self.model.transcribe(
-                waveform[segment.slice()],
-                prev_transcription=' '.join(t.text for t in transcriptions),
+                segment_waveform,
+                prev_transcription=limited_history,
                 **kwargs
             )
             transcriptions += [p.shift(segment.start_time) for p in preds]
@@ -120,7 +150,7 @@ class RecurrentContextLongform(Longform):
 
 '''
 Example usage:
-shortform_llm = QwenAudio()
+shortform_llm = Voxtral()
 longform_recognizer = RecurrentContextLongform(shortform_llm)
 longform_recognizer.transcribe(long_waveform, domain_words='<chemistry text>')
 '''
