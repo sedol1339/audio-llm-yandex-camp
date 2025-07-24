@@ -9,13 +9,13 @@ from gigaam.decoding import CTCGreedyDecoding
 import torch
 from torch.nn.utils.rnn import pad_sequence
 import numpy as np
-
+from typing import Literal, Any, List, Optional
 from ..ctc.base import ctc_mapping
 from ..segments.chunking import chunk_audio, average_segment_features
-from .base import ASREvalWrapper
+from .base import ASREvalWrapper, TimedText
 from ..utils.types import FLOATS, INTS
 
-
+SAMPLING_RATE = 16000
 FREQ = 25  # GigaAM2 encoder outputs per second
 
 @dataclass
@@ -173,6 +173,10 @@ class GigaAMWrapper(ASREvalWrapper):
             for seg in segments_tensors
         ]
         return ' '.join(transcriptions)
+
+    @override
+    def transcribe(self, waveform: FLOATS, **kwargs: Any) -> list[TimedText]:
+        return [TimedText(0, len(waveform) / SAMPLING_RATE, self.__call__([waveform]))]
     
     @override
     def __call__(self, waveforms: list[FLOATS]) -> list[str]:

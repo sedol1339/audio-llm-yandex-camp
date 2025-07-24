@@ -3,15 +3,17 @@ import numpy as np
 import soundfile as sf
 from tempfile import NamedTemporaryFile
 from abc import ABC, abstractmethod
-from typing import List
+from typing import List, Any
 
 # Yandex SpeechKit imports
 from speechkit import model_repository, configure_credentials, creds
 from speechkit.stt import AudioProcessingType
 from ..utils.formatting import waveform_to_temp_wav
 from ..utils.types import FLOATS
-from .base import ASREvalWrapper
+from .base import ASREvalWrapper, TimedText
 
+
+SAMPLING_RATE = 16000
 
 class YandexSpeechKitWrapper(ASREvalWrapper):
     """
@@ -43,6 +45,10 @@ class YandexSpeechKitWrapper(ASREvalWrapper):
         self.model.model = model
         self.model.language = language
         self.model.audio_processing_type = audio_processing
+
+    @override
+    def transcribe(self, waveform: FLOATS, **kwargs: Any) -> list[TimedText]:
+        return [TimedText(0, len(waveform) / SAMPLING_RATE, self.__call__([waveform]))]
 
     def __call__(self, waveforms: List[FLOATS]) -> List[str]:
         """
