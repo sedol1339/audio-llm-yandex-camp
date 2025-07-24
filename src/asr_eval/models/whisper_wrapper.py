@@ -24,7 +24,9 @@ class WhisperLongformWrapper(ASREvalWrapper):
             'task': 'transcribe',
             'temperature': 0,
             'do_sample': False,
-            'return_timestamps': True
+            'return_timestamps': True,
+            'max_new_tokens': 10_000,
+            'condition_on_prev_tokens': False,
         }
 
     def _maybe_instantiate(self):
@@ -57,7 +59,8 @@ class WhisperLongformWrapper(ASREvalWrapper):
                 waveform,
                 sampling_rate=16000,
                 return_tensors="pt",
-                padding="longest"  # Добавлено для поддержки разных длин
+                padding="longest",  # Добавлено для поддержки разных длин
+                truncation=False,
             )
             
             # 3. Перенос на нужное устройство с правильным типом
