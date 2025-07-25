@@ -1,0 +1,46 @@
+{
+    "preiction": " 9",
+    "transcription": "девять",
+    "alignment": {
+        "_target_": "src.asr_eval.align.data.MatchesList",
+        "matches": [
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "девять",
+                    "uid": "1d347ba2-0099-43fc-8699-7988da1af40d",
+                    "start_pos": 0,
+                    "end_pos": 6,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "9",
+                    "uid": "fbeead66-269e-4640-9e72-72442582190a",
+                    "start_pos": 1,
+                    "end_pos": 2,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "deletion",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 1,
+                    "n_correct": 0,
+                    "n_char_errors": 6
+                }
+            }
+        ],
+        "total_true_len": 1,
+        "score": {
+            "_target_": "src.asr_eval.align.data.AlignmentScore",
+            "n_word_errors": 1,
+            "n_correct": 0,
+            "n_char_errors": 6
+        }
+    }
+}

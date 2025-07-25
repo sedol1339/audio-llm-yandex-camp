@@ -1,0 +1,46 @@
+{
+    "preiction": " Наталья",
+    "transcription": "Наталия",
+    "alignment": {
+        "_target_": "src.asr_eval.align.data.MatchesList",
+        "matches": [
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "наталия",
+                    "uid": "aaa62b4f-2f7e-4c95-b4e1-1b352d101b9a",
+                    "start_pos": 0,
+                    "end_pos": 7,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "наталья",
+                    "uid": "549508bb-6b36-4ab9-86b1-1648a24aa6b4",
+                    "start_pos": 1,
+                    "end_pos": 8,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "deletion",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 1,
+                    "n_correct": 0,
+                    "n_char_errors": 1
+                }
+            }
+        ],
+        "total_true_len": 1,
+        "score": {
+            "_target_": "src.asr_eval.align.data.AlignmentScore",
+            "n_word_errors": 1,
+            "n_correct": 0,
+            "n_char_errors": 1
+        }
+    }
+}

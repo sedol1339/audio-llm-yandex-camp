@@ -1,0 +1,46 @@
+{
+    "preiction": "Развлекаюсь.",
+    "transcription": "развлекаюсь",
+    "alignment": {
+        "_target_": "src.asr_eval.align.data.MatchesList",
+        "matches": [
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "развлекаюсь",
+                    "uid": "bcc0053f-6036-4330-982f-4cad776379ba",
+                    "start_pos": 0,
+                    "end_pos": 11,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "развлекаюсь",
+                    "uid": "a69ad24c-aa2f-4ee4-95cf-b23fbd9c9b86",
+                    "start_pos": 0,
+                    "end_pos": 11,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "correct",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 0,
+                    "n_correct": 1,
+                    "n_char_errors": 0
+                }
+            }
+        ],
+        "total_true_len": 1,
+        "score": {
+            "_target_": "src.asr_eval.align.data.AlignmentScore",
+            "n_word_errors": 0,
+            "n_correct": 1,
+            "n_char_errors": 0
+        }
+    }
+}

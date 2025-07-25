@@ -1,0 +1,109 @@
+{
+    "preiction": "чачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачача",
+    "transcription": "Стало быть, всё кончено!",
+    "alignment": {
+        "_target_": "src.asr_eval.align.data.MatchesList",
+        "matches": [
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "стало",
+                    "uid": "5b6ecfcb-fe23-46af-b3bd-f7e79c38c6f8",
+                    "start_pos": 0,
+                    "end_pos": 5,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": null,
+                "status": "insertion",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 1,
+                    "n_correct": 0,
+                    "n_char_errors": 5
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "быть",
+                    "uid": "061ca28d-011b-4977-86e1-c181d2c6fed0",
+                    "start_pos": 6,
+                    "end_pos": 10,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": null,
+                "status": "insertion",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 1,
+                    "n_correct": 0,
+                    "n_char_errors": 4
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "все",
+                    "uid": "ff66c83d-036d-4162-94fc-3ce57c749d44",
+                    "start_pos": 12,
+                    "end_pos": 15,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": null,
+                "status": "insertion",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 1,
+                    "n_correct": 0,
+                    "n_char_errors": 3
+                }
+            },
+            {
+                "_target_": "src.asr_eval.align.data.Match",
+                "true": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "кончено",
+                    "uid": "c379b332-cf82-484c-a7c4-c4edca9b4b1f",
+                    "start_pos": 16,
+                    "end_pos": 23,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "pred": {
+                    "_target_": "src.asr_eval.align.data.Token",
+                    "value": "чачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачачача",
+                    "uid": "570db3e6-612f-417e-8000-9e880a23c3e4",
+                    "start_pos": 0,
+                    "end_pos": 290,
+                    "start_time": NaN,
+                    "end_time": NaN,
+                    "type": "word"
+                },
+                "status": "deletion",
+                "score": {
+                    "_target_": "src.asr_eval.align.data.AlignmentScore",
+                    "n_word_errors": 1,
+                    "n_correct": 0,
+                    "n_char_errors": 289
+                }
+            }
+        ],
+        "total_true_len": 4,
+        "score": {
+            "_target_": "src.asr_eval.align.data.AlignmentScore",
+            "n_word_errors": 4,
+            "n_correct": 0,
+            "n_char_errors": 301
+        }
+    }
+}

@@ -1,0 +1,70 @@
+datasets:
+  podlodka:
+    dataset: podlodka
+    params: {}
+  golos_farfield:
+    dataset: golos_farfield
+    params: {}
+  rulibrispeech:
+    dataset: rulibrispeech
+    params: {}
+  sova_rudevices:
+    dataset: sova_rudevices
+    params: {}
+  fleurs:
+    dataset: fleurs
+    params: {}
+  resd:
+    dataset: resd
+    params: {}
+  common_voice_17_0:
+    dataset: common_voice_17_0
+    params: {}
+  wikipedia_asr_splitted:
+    dataset: wikipedia_asr_splitted
+    params: {}
+  speech_massive:
+    dataset: speech_massive
+    params: {}
+  rmndrnts_lena_dataset:
+    dataset: rmndrnts_lena_dataset
+    params: {}
+models:
+  whisper:
+    model: whisper
+    model_name: whisper
+    params:
+      model_name: openai/whisper-large-v3
+  qwen_audio:
+    model: qwen_audio
+    model_name: qwen_audio
+    params: {}
+  voxtral:
+    model: voxtral
+    model_name: voxtral
+    params:
+      _target_: src.asr_eval.models.base.RecurrentContextLongform
+      shortform_model:
+        _target_: src.asr_eval.models.voxtral_wrapper.VoxtralWrapper
+        api: http://158.160.47.65:8000/v1
+        lang: ru
+        temperature: 0.2
+        top_p: 0.95
+  gigaam:
+    model: gigaam
+    model_name: gigaam
+    params: {}
+  gemma:
+    model: gemma
+    model_name: gemma
+    params: {}
+  t_one:
+    model: t_one
+    model_name: t_one
+    params: {}
+run:
+  name: first100
+output_dir: ./outputs
+metrics_list:
+- wer
+sample_rate: 16000
