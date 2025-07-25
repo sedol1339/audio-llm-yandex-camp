@@ -20,12 +20,14 @@ class VoxtralWrapper(ASREvalWrapper):
         lang: Literal['ru', 'en'] = 'ru',
         temperature: float = 0.0,
         top_p: float = 0.95,
+        use_double_asr: bool = False,
     ):
         self.model_name = model_name
         self.lang = lang
         self.api = api
         self.temperature = temperature
         self.top_p = top_p
+        self.use_double_asr = use_double_asr
         
         self.client = OpenAI(
             api_key="EMPTY",
@@ -41,13 +43,11 @@ class VoxtralWrapper(ASREvalWrapper):
 
     def _waveform_to_audio_chunk(self, waveform: FLOATS) -> AudioChunk:
         """Convert waveform to AudioChunk using temporary file."""
-        # Create temporary WAV file
         with tempfile.NamedTemporaryFile(suffix='.wav', delete=False) as temp_file:
             temp_path = temp_file.name
             sf.write(temp_path, waveform, 16000, format='WAV')  # type: ignore
         
         try:
-            # Load audio and create chunk
             audio = Audio.from_file(temp_path, strict=False)
             return AudioChunk.from_audio(audio)
         finally:
@@ -72,33 +72,36 @@ class VoxtralWrapper(ASREvalWrapper):
             return [TimedText(0, len(waveform) / 16000, "")]
         
         try:
-            wav_buffer = io.BytesIO()
-            sf.write(wav_buffer, waveform, 16000, format='WAV')
-            wav_buffer.seek(0)
-            files = {'file': ('audio.wav', wav_buffer, 'audio/wav')}
-            data = {
-                'model': self.model_name,
-                'language': self.lang,
-                'response_format': 'json',
-                'temperature': self.temperature,
-            }
-            with httpx.Client() as client:
-                response = client.post(
-                    f"{self.api}/audio/transcriptions",
-                    data=data,
-                    files=files,
-                    timeout=30
-                )
-                if response.status_code == 200:
-                    json_response = response.json()
-                    text = json_response.get('text', '')
-                else:
-                    raise RuntimeError(f"HTTP error {response.status_code} from Voxtral API")
+            if self.use_double_asr:
+                wav_buffer = io.BytesIO()
+                sf.write(wav_buffer, waveform, 16000, format='WAV')
+                wav_buffer.seek(0)
+                files = {'file': ('audio.wav', wav_buffer, 'audio/wav')}
+                data = {
+                    'model': self.model_name,
+                    'language': self.lang,
+                    'response_format': 'json',
+                    'temperature': self.temperature,
+                }
+                with httpx.Client() as client:
+                    response = client.post(
+                        f"{self.api}/audio/transcriptions",
+                        data=data,
+                        files=files,
+                        timeout=30
+                    )
+                    if response.status_code == 200:
+                        json_response = response.json()
+                        text = json_response.get('text', '')
+                    else:
+                        raise RuntimeError(f"HTTP error {response.status_code} from Voxtral API")
+            else:
+                text = ""
 
             
             audio_chunk = self._waveform_to_audio_chunk(waveform)
 
-            system_prompt = f'Recognize the audio on {self.lang} language.'
+            system_prompt = f'Транскрибируй аудио на русском языке. Ты должен возвращать только на русском языке.'
             
             base_prompt = kwargs.get('prompt')
             prev_transcription = kwargs.get('prev_transcription')
@@ -111,7 +114,11 @@ class VoxtralWrapper(ASREvalWrapper):
             else:
                 full_prompt = base_prompt
 
-            full_prompt = f"{system_prompt}.Сгенерированная транскрипция аудио из аудиофайла: {text}.Используй ее для улучшения транскрипции. {full_prompt}"
+            if self.use_double_asr:
+                full_prompt = f"{system_prompt}. Сгенерированная транскрипция аудио из аудиофайла: {text}. Используй ее для улучшения транскрипции. {full_prompt}. НЕ ИСПОЛЬЗУЙ АНГЛИЙСКИЕ СЛОВА. ВЕРНИ ВСЕ НА РУССКОМ ЯЗЫКЕ"
+            else:
+                full_prompt = f"{system_prompt}. {full_prompt}. НЕ ИСПОЛЬЗУЙ АНГЛИЙСКИЕ СЛОВА. ВЕРНИ ВСЕ НА РУССКОМ ЯЗЫКЕ"
+
             
             text_chunk = TextChunk(text=full_prompt)
             
@@ -131,3 +138,73 @@ class VoxtralWrapper(ASREvalWrapper):
             if isinstance(e, RuntimeError):
                 raise
             raise RuntimeError(f"Error processing audio with Voxtral: {str(e)}")
+
+    def transcribe_simple(self, waveform: FLOATS) -> str:
+        if not self.is_voxtral_healthy():
+            raise RuntimeError("Voxtral model is not healthy or not responding")
+        
+        if len(waveform) == 0:
+            return ""
+        
+        if len(waveform) < 100:
+            print(f"Warning: Very short waveform ({len(waveform)} samples), returning empty transcription")
+            return ""
+        
+        try:
+            audio_chunk = self._waveform_to_audio_chunk(waveform)
+            
+            prompt = "сделай транскрипцию аудио на русском языке"
+            text_chunk = TextChunk(text=prompt)
+            
+            user_msg = UserMessage(content=[audio_chunk, text_chunk]).to_openai()
+            
+        
+            response = self.client.chat.completions.create(
+                model=self.model_name,
+                messages=[user_msg],  # type: ignore
+                temperature=self.temperature,
+                top_p=self.top_p,
+            )
+            
+            return response.choices[0].message.content or ""
+
+        except Exception as e:
+            if isinstance(e, RuntimeError):
+                raise
+            raise RuntimeError(f"Error processing audio with Voxtral: {str(e)}")
+
+    def voxtral_asr(self, waveform: FLOATS, **kwargs: Any) -> list[TimedText]:
+        if not self.is_voxtral_healthy():
+            raise RuntimeError("Voxtral model is not healthy or not responding")
+        
+        if len(waveform) == 0:
+            return [TimedText(0, 0, "")]
+        
+        if len(waveform) < 100:
+            print(f"Warning: Very short waveform ({len(waveform)} samples), returning empty transcription")
+            return [TimedText(0, len(waveform) / 16000, "")]
+
+        wav_buffer = io.BytesIO()
+        sf.write(wav_buffer, waveform, 16000, format='WAV')
+        wav_buffer.seek(0)
+        files = {'file': ('audio.wav', wav_buffer, 'audio/wav')}
+        data = {
+            'model': self.model_name,
+            'language': self.lang,
+            'response_format': 'json',
+            'temperature': self.temperature,
+        }
+        with httpx.Client() as client:
+            response = client.post(
+                f"{self.api}/audio/transcriptions",
+                data=data,
+                files=files,
+                timeout=30
+            )
+            if response.status_code == 200:
+                json_response = response.json()
+                text = json_response.get('text', '')
+                return text
+            else:
+                raise RuntimeError(f"HTTP error {response.status_code} from Voxtral API")
+
