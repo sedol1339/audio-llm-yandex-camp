@@ -1,11 +1,13 @@
 from typing import override
+from typing import Literal, Any, List, Optional
+
 
 import numpy as np
 from tone import StreamingCTCPipeline
 import torch
 import torchaudio
 
-from ..models.base import ASREvalWrapper
+from ..models.base import ASREvalWrapper, TimedText
 from ..utils.types import FLOATS
 
 
@@ -65,7 +67,11 @@ class TOneWrapper(ASREvalWrapper):
             ).numpy() # type: ignore
             if (maxval := np.abs(waveform).max()) > 0:
                 waveform /= maxval
-            utterances = self.pipeline.forward_offline((waveform * 32768).astype(np.int32))
+            utterances = self.pipeline.forward_offline((waveform * 32767).astype(np.int32))
             texts.append(' '.join(x.text for x in utterances))  # we can use x.start_time, x.end_time
         
         return texts
+
+    @override
+    def transcribe(self, waveform: FLOATS, **kwargs: Any) -> list[TimedText]:
+        return [TimedText(0, len(waveform) / SAMPLING_RATE, self.__call__([waveform]))]

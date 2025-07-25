@@ -106,14 +106,40 @@ def load_common_voice_17_0() -> Dataset:
         .cast_column('audio', Audio(sampling_rate=16000)) # type: ignore
     )
 
-def load_wikipedia_asr_splitted() -> DatasetDict:
-    return (
-        cast(DatasetDict, load_dataset('rmndrnts/wikipedia_asr_splitted'))
-        .cast_column('audio', Audio(sampling_rate=16000)) # type: ignore
+def load_wikipedia_asr_splitted() -> Dataset:
+    # Загружаем датасет с отключенной проверкой аудио
+    ds_dict = load_dataset(
+        'rmndrnts/wikipedia_asr_splitted',
+        verification_mode="no_checks"
     )
+    
+    # Объединяем все сплиты в один датасет (исправленная строка)
+    combined = concatenate_datasets([ds_dict[split] for split in ds_dict.keys()])
+    
+    # Фильтруем нежелательные категории
+    categories_to_remove = {'politics', 'economics', 'philosophy'}
+    filtered_indices = [
+        i for i, x in enumerate(combined['category']) 
+        if x not in categories_to_remove
+    ]
+    filtered = combined.select(filtered_indices)
+    
+    # Преобразуем аудио
+    filtered = filtered.cast_column('audio', Audio(sampling_rate=16000))
+    
+    return filtered
 
-def load_rmndrnts_lena_dataset() -> DatasetDict:
-    return (
-        cast(DatasetDict, load_dataset('rmndrnts/lena_dataset_splitted'))
-        .cast_column('audio', Audio(sampling_rate=16000)) # type: ignore
-    )
+def load_rmndrnts_lena_dataset() -> Dataset:
+    # Загружаем DatasetDict
+    dataset_dict = cast(DatasetDict, load_dataset('rmndrnts/lena_dataset_splitted'))
+    
+    # Собираем все поднаборы в один список
+    all_datasets = [dataset_dict[subset] for subset in dataset_dict.keys()]
+    
+    # Объединяем все датасеты в один
+    combined_dataset = concatenate_datasets(all_datasets)
+    
+    # Применяем преобразование аудио
+    combined_dataset = combined_dataset.cast_column('audio', Audio(sampling_rate=16000))
+    
+    return combined_dataset

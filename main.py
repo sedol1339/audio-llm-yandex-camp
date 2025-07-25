@@ -24,10 +24,16 @@ from src.serialize import save_to_json
 from tqdm import tqdm
 from collections import OrderedDict
 from src.asr_eval.models.qwen_audio_wrapper import QwenAudioWrapper
-from src.asr_eval.models.voxtral_wrapper import VoxtralmWrapper
 from src.asr_eval.models.gigaam_wrapper import GigaAMWrapper
 from src.asr_eval.models.gemma_wrapper import Gemma3nSTTWrapper
-# from src.asr_eval.models.t_one_wrapper import TOneWrapper
+from src.asr_eval.models.t_one_wrapper import TOneWrapper
+import numpy as np
+from src.asr_eval.models.base import RecurrentContextLongform
+from src.asr_eval.models.voxtral_wrapper import VoxtralWrapper
+# from src.asr_eval.models.yandex_speechkit_wrapper import YandexSpeechKitWrapper
+import librosa
+from hydra.utils import instantiate
+from itertools import islice
 
 # Настройка логгера
 logger = logging.getLogger(__name__)
@@ -86,14 +92,14 @@ def get_predictions(
     context: Optional[AbsContext] = StringContext("")
 ) -> List[str]:
     predictions = []
-    for index, sample in enumerate(tqdm(dataset)):
-        if index >= 20:
+    for index, sample in enumerate(dataset):
+        if index >= 99:
             break
         audio: FLOATS = sample['audio']['array']
         sample_rate: int = sample['audio']['sampling_rate']
         transforms = torchaudio.transforms.Resample(orig_freq=sample_rate, new_freq=cfg.sample_rate)
         audio = transforms(audio)
-        prediction = model([audio])[0]
+        prediction = model.transcribe(audio)[0].text[0]
         predictions.append(prediction)
         transcription = sample['transcription']
         save_predict(index, model_cfg, dataset_cfg.dataset, prediction, transcription, cfg)
@@ -117,6 +123,12 @@ def load_dataset_from_config(dataset_cfg: DictConfig) -> Dataset:
         return load_resd()
     if dataset_cfg.dataset == "common_voice_17_0":
         return load_common_voice_17_0()
+    if dataset_cfg.dataset == "rmndrnts_lena_dataset":
+        return load_rmndrnts_lena_dataset()
+    if dataset_cfg.dataset == "wikipedia_asr_splitted":
+        return load_wikipedia_asr_splitted()
+    if dataset_cfg.dataset == "speech_massive":
+        return load_speech_massive()
     # Добавьте здесь загрузку других датасетов
     raise ValueError(f"Unknown dataset: {dataset_cfg.dataset}")
 
@@ -126,13 +138,15 @@ def initialize_model(model_cfg: DictConfig) -> ASREvalWrapper:
     if model_cfg.model == "qwen_audio":
         return QwenAudioWrapper(**model_cfg.params)
     if model_cfg.model == "woxtral":
-        return VoxtralmWrapper(**model_cfg.params)
+        return instantiate(model_cfg.params)
     if model_cfg.model == "gigaam":
         return GigaAMWrapper(**model_cfg.params)
     if model_cfg.model == "gemma":
         return Gemma3nSTTWrapper(**model_cfg.params)
     if model_cfg.model == "t_one":
         return TOneWrapper(**model_cfg.params)
+    if model_cfg.model == "yandex_speech":
+        return YandexSpeechKitWrapper(**model_cfg.params)
         
     # Добавьте здесь инициализацию других моделей
     raise ValueError(f"Unknown model: {model_cfg.model}")
@@ -143,7 +157,7 @@ def compute_metrics(predictions: List[str], transcriptions: List[str], cfg: Dict
     if "wer" in cfg.metrics_list:
         wer = 0.0
         count = 0
-        for prediction, transcription in zip(predictions, transcriptions):
+        for prediction, transcription in zip(predictions, transcriptions[:len(predictions)]):
             true_words = parse_multivariant_string(transcription)
             alignment = align(true_words, split_text_into_tokens(prediction))
             wer += alignment.score.n_word_errors / max(1, len(true_words))

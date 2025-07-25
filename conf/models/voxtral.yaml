@@ -1,0 +1,10 @@
+model: voxtral
+model_name: voxtral
+params:
+  _target_: src.asr_eval.models.base.RecurrentContextLongform
+  shortform_model:
+    _target_: src.asr_eval.models.voxtral_wrapper.VoxtralWrapper
+    api: "http://158.160.47.65:8000/v1"
+    lang: ru
+    temperature: 0.2
+    top_p: 0.95

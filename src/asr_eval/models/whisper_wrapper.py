@@ -3,8 +3,11 @@ from typing_extensions import override  # Для Python < 3.12
 import torch
 import numpy as np
 from transformers import WhisperForConditionalGeneration, WhisperProcessor # type: ignore
-from src.asr_eval.models.base import ASREvalWrapper
+from src.asr_eval.models.base import ASREvalWrapper, TimedText
 from src.asr_eval.utils.types import FLOATS
+from typing import Literal, Any, List, Optional
+
+SAMPLING_RATE = 16000
 
 class WhisperLongformWrapper(ASREvalWrapper):
     def __init__(
@@ -24,7 +27,8 @@ class WhisperLongformWrapper(ASREvalWrapper):
             'task': 'transcribe',
             'temperature': 0,
             'do_sample': False,
-            'return_timestamps': True
+            'return_timestamps': True,
+            'condition_on_prev_tokens': False,
         }
 
     def _maybe_instantiate(self):
@@ -39,6 +43,9 @@ class WhisperLongformWrapper(ASREvalWrapper):
                 attn_implementation="sdpa",
                 torch_dtype=torch.float32
             ).to(self.device) # type: ignore
+
+    def transcribe(self, waveform: FLOATS, **kwargs: Any) -> list[TimedText]:
+        return [TimedText(0, len(waveform) / SAMPLING_RATE, self.__call__([waveform]))]
 
     @override
     def __call__(self, waveforms: list[FLOATS]) -> list[str]:
@@ -57,7 +64,8 @@ class WhisperLongformWrapper(ASREvalWrapper):
                 waveform,
                 sampling_rate=16000,
                 return_tensors="pt",
-                padding="longest"  # Добавлено для поддержки разных длин
+                padding="longest",  # Добавлено для поддержки разных длин
+                truncation=False,
             )
             
             # 3. Перенос на нужное устройство с правильным типом

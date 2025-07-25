@@ -15,11 +15,15 @@ dependencies = [
     "ipywidgets>=8.1.7",
     "librosa>=0.11.0",
     "matplotlib>=3.10.3",
+    "mistral-common>=1.8.2",
     "nltk>=3.9.1",
     "numpy==1.26.4",
+    "openai>=1.97.1",
+    "protobuf>=6.31.1",
     "pyannote-audio>=3.3.2",
     "razdel>=0.5.0",
     "soundfile>=0.13.1",
+    "speechkit>=2.1.0",
     "srt>=3.5.3",
     "termcolor>=3.1.0",
     "timm>=1.0.19",
@@ -29,3 +33,6 @@ dependencies = [
     "tqdm>=4.67.1",
     "transformers>=4.53.2",
 ]
+
+[tool.uv.sources]
+tone = { git = "https://github.com/voicekit-team/T-one" }

@@ -7,12 +7,15 @@ import gc
 import numpy as np
 import soundfile as sf
 from tempfile import NamedTemporaryFile
-from typing import List, override, Literal, Optional
+from typing import List, override, Literal, Optional, Any
 from transformers import AutoProcessor, AutoModelForImageTextToText
-from src.asr_eval.models.base import ASREvalWrapper
+from src.asr_eval.models.base import ASREvalWrapper, TimedText
 from src.asr_eval.utils.types import FLOATS
 from ..segments.chunking import chunk_audio  
 from ..segments.segment import AudioSegment  
+
+
+SAMPLING_RATE = 16000
 
 # def extract_transcript(raw_text: str) -> str:
 #     """Улучшенное извлечение транскрипции с обработкой ошибок"""
@@ -241,6 +244,10 @@ class Gemma3nSTTWrapper(ASREvalWrapper):
                 merged += " " + next_text
                 
         return merged
+
+    @override
+    def transcribe(self, waveform: FLOATS, **kwargs: Any) -> list[TimedText]:
+        return [TimedText(0, len(waveform) / SAMPLING_RATE, self.__call__([waveform]))]
 
     @override
     def __call__(self, waveforms: List[FLOATS], sampling_rate: int = 16000) -> List[str]:
